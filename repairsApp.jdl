@@ -1,0 +1,106 @@
+/*
+ * v1.0.0
+ * JDL Definition For repairsApp
+ */
+/**
+ * Customer entity.
+ * @author oagueda.
+ */
+entity Customer {
+	name String required
+	nif String required unique
+	address String
+	city String
+	zipCode String
+	phone1 String required
+	phone2 String
+	email String
+    /**
+	* Field for logical deletion
+    * should be false by default
+	*/
+    deleted Boolean required
+}
+/**
+ * Device entity.
+ * @author oagueda.
+ */
+entity Device {
+	/**
+	 * The type property is an enumeration
+	 */
+	type Type required
+	brand String
+	model String
+	serialNumber String
+	warranty Boolean required
+	password String
+	hasPattern Boolean required
+	simPinCode String
+	notes TextBlob
+    /**
+	* Field for logical deletion
+    * should be false by default
+	*/
+    deleted Boolean required
+}
+/**
+ * Repair entity.
+ * @author oagueda.
+ */
+entity Repair {
+	description TextBlob required
+	observations TextBlob
+	internalObservations TextBlob
+    /**
+	* The status property is an enumeration
+	*/
+	status Status required
+	closedDate Instant
+	budget String
+	workDone TextBlob
+	usedMaterial TextBlob
+	customerMaterial TextBlob
+	importantData Boolean
+	total String
+}
+/**
+ * The hasPattern entity is used to
+ * represent classic Android pattern lock.
+ * @author oagueda.
+ */
+entity Pattern {
+	code String
+}
+/**
+ * Type enum for Device.
+ * MAYBE: This could be an entity with
+ * the posibility to add custom fields
+ * @author oagueda.
+ */
+enum Type {
+	LAPTOP, DESKTOP, PRINTER, PHONE, TABLET, OTHER
+}
+/**
+ * Status enum for Repair.
+ * @author oagueda.
+ */
+enum Status {
+	TODO, REVIEW, WIP, DONE, DELETED
+}
+relationship OneToMany {
+	Customer to Device
+    Device to Repair
+}
+relationship OneToOne {
+	Device to Pattern
+}
+// Set pagination options
+paginate Repair with infinite-scroll
+paginate Device, Customer with pagination
+// Use Data Transfer Objects (DTO)
+dto all with mapstruct
+// Set service options
+service all with serviceClass
+// Set filters For all
+filter all
