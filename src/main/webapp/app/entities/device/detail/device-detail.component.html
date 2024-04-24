@@ -1,0 +1,90 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (device()) {
+      <div>
+        <h2 data-cy="deviceDetailsHeading"><span jhiTranslate="repairsApp.device.detail.title">Device</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ device()!.id }}</span>
+          </dd>
+          <dt><span [ngbTooltip]="'repairsApp.device.help.type' | translate" jhiTranslate="repairsApp.device.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'repairsApp.Type.' + (device()!.type ?? 'null')">{{
+              { null: '', LAPTOP: 'LAPTOP', DESKTOP: 'DESKTOP', PRINTER: 'PRINTER', PHONE: 'PHONE', TABLET: 'TABLET', OTHER: 'OTHER' }[
+                device()!.type ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.brand">Brand</span></dt>
+          <dd>
+            <span>{{ device()!.brand }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.model">Model</span></dt>
+          <dd>
+            <span>{{ device()!.model }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.serialNumber">Serial Number</span></dt>
+          <dd>
+            <span>{{ device()!.serialNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.warranty">Warranty</span></dt>
+          <dd>
+            <span>{{ device()!.warranty }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.password">Password</span></dt>
+          <dd>
+            <span>{{ device()!.password }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.hasPattern">Has Pattern</span></dt>
+          <dd>
+            <span>{{ device()!.hasPattern }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.simPinCode">Sim Pin Code</span></dt>
+          <dd>
+            <span>{{ device()!.simPinCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.notes">Notes</span></dt>
+          <dd>
+            <span>{{ device()!.notes }}</span>
+          </dd>
+          <dt><span [ngbTooltip]="'repairsApp.device.help.deleted' | translate" jhiTranslate="repairsApp.device.deleted">Deleted</span></dt>
+          <dd>
+            <span>{{ device()!.deleted }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.pattern">Pattern</span></dt>
+          <dd>
+            @if (device()!.pattern) {
+              <div>
+                <a [routerLink]="['/pattern', device()!.pattern?.id, 'view']">{{ device()!.pattern?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="repairsApp.device.customer">Customer</span></dt>
+          <dd>
+            @if (device()!.customer) {
+              <div>
+                <a [routerLink]="['/customer', device()!.customer?.id, 'view']">{{ device()!.customer?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/device', device()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

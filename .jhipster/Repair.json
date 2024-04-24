@@ -1,0 +1,79 @@
+{
+  "annotations": {
+    "changelogDate": "20240424142614"
+  },
+  "applications": "*",
+  "documentation": "Repair entity.\\n@author oagueda.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "observations",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "internalObservations",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "documentation": "The status property is an enumeration",
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldTypeDocumentation": "Status enum for Repair.\\n@author oagueda.",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "TODO,REVIEW,WIP,DONE,DELETED"
+    },
+    {
+      "fieldName": "closedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "budget",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "workDone",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "usedMaterial",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "customerMaterial",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "importantData",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Repair",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "repair",
+      "relationshipName": "device",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

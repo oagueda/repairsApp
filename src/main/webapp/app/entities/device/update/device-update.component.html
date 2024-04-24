@@ -1,0 +1,186 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-device-heading" data-cy="DeviceCreateUpdateHeading" jhiTranslate="repairsApp.device.home.createOrEditLabel">
+        Create or edit a Device
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="repairsApp.device.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_type"
+            [ngbTooltip]="'repairsApp.device.help.type' | translate"
+            jhiTranslate="repairsApp.device.type"
+            >Type</label
+          >
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'repairsApp.Type.null' | translate }}</option>
+            @for (type of typeValues; track $index) {
+              <option [value]="type">{{ 'repairsApp.Type.' + type | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)) {
+            <div>
+              @if (editForm.get('type')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_brand" jhiTranslate="repairsApp.device.brand">Brand</label>
+          <input type="text" class="form-control" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_model" jhiTranslate="repairsApp.device.model">Model</label>
+          <input type="text" class="form-control" name="model" id="field_model" data-cy="model" formControlName="model" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_serialNumber" jhiTranslate="repairsApp.device.serialNumber">Serial Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="serialNumber"
+            id="field_serialNumber"
+            data-cy="serialNumber"
+            formControlName="serialNumber"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_warranty" jhiTranslate="repairsApp.device.warranty">Warranty</label>
+          <input type="checkbox" class="form-check" name="warranty" id="field_warranty" data-cy="warranty" formControlName="warranty" />
+          @if (editForm.get('warranty')!.invalid && (editForm.get('warranty')!.dirty || editForm.get('warranty')!.touched)) {
+            <div>
+              @if (editForm.get('warranty')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_password" jhiTranslate="repairsApp.device.password">Password</label>
+          <input type="text" class="form-control" name="password" id="field_password" data-cy="password" formControlName="password" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_hasPattern" jhiTranslate="repairsApp.device.hasPattern">Has Pattern</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="hasPattern"
+            id="field_hasPattern"
+            data-cy="hasPattern"
+            formControlName="hasPattern"
+          />
+          @if (editForm.get('hasPattern')!.invalid && (editForm.get('hasPattern')!.dirty || editForm.get('hasPattern')!.touched)) {
+            <div>
+              @if (editForm.get('hasPattern')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_simPinCode" jhiTranslate="repairsApp.device.simPinCode">Sim Pin Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="simPinCode"
+            id="field_simPinCode"
+            data-cy="simPinCode"
+            formControlName="simPinCode"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes" jhiTranslate="repairsApp.device.notes">Notes</label>
+          <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_deleted"
+            [ngbTooltip]="'repairsApp.device.help.deleted' | translate"
+            jhiTranslate="repairsApp.device.deleted"
+            >Deleted</label
+          >
+          <input type="checkbox" class="form-check" name="deleted" id="field_deleted" data-cy="deleted" formControlName="deleted" />
+          @if (editForm.get('deleted')!.invalid && (editForm.get('deleted')!.dirty || editForm.get('deleted')!.touched)) {
+            <div>
+              @if (editForm.get('deleted')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pattern" jhiTranslate="repairsApp.device.pattern">Pattern</label>
+          <select
+            class="form-control"
+            id="field_pattern"
+            data-cy="pattern"
+            name="pattern"
+            formControlName="pattern"
+            [compareWith]="comparePattern"
+          >
+            <option [ngValue]="null"></option>
+            @for (patternOption of patternsCollection; track $index) {
+              <option [ngValue]="patternOption">{{ patternOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customer" jhiTranslate="repairsApp.device.customer">Customer</label>
+          <select
+            class="form-control"
+            id="field_customer"
+            data-cy="customer"
+            name="customer"
+            formControlName="customer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            @for (customerOption of customersSharedCollection; track $index) {
+              <option [ngValue]="customerOption">{{ customerOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

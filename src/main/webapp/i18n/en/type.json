@@ -1,0 +1,13 @@
+{
+  "repairsApp": {
+    "Type": {
+      "null": "",
+      "LAPTOP": "LAPTOP",
+      "DESKTOP": "DESKTOP",
+      "PRINTER": "PRINTER",
+      "PHONE": "PHONE",
+      "TABLET": "TABLET",
+      "OTHER": "OTHER"
+    }
+  }
+}

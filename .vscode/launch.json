@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-RepairsApp<repairs-app>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "xyz.oagueda.RepairsApp",
+      "projectName": "repairs-app",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

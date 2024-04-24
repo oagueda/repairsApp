@@ -1,0 +1,38 @@
+{
+  "repairsApp": {
+    "repair": {
+      "home": {
+        "title": "Repairs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Repair",
+        "createOrEditLabel": "Create or edit a Repair",
+        "notFound": "No Repairs found"
+      },
+      "created": "A new Repair is created with identifier {{ param }}",
+      "updated": "A Repair is updated with identifier {{ param }}",
+      "deleted": "A Repair is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Repair {{ id }}?"
+      },
+      "detail": {
+        "title": "Repair"
+      },
+      "id": "ID",
+      "description": "Description",
+      "observations": "Observations",
+      "internalObservations": "Internal Observations",
+      "status": "Status",
+      "closedDate": "Closed Date",
+      "budget": "Budget",
+      "workDone": "Work Done",
+      "usedMaterial": "Used Material",
+      "customerMaterial": "Customer Material",
+      "importantData": "Important Data",
+      "total": "Total",
+      "device": "Device",
+      "help": {
+        "status": "The status property is an enumeration"
+      }
+    }
+  }
+}

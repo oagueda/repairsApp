@@ -1,0 +1,36 @@
+{
+  "repairsApp": {
+    "customer": {
+      "home": {
+        "title": "Customers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Customer",
+        "createOrEditLabel": "Create or edit a Customer",
+        "notFound": "No Customers found"
+      },
+      "created": "A new Customer is created with identifier {{ param }}",
+      "updated": "A Customer is updated with identifier {{ param }}",
+      "deleted": "A Customer is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Customer {{ id }}?"
+      },
+      "detail": {
+        "title": "Customer"
+      },
+      "id": "ID",
+      "name": "Name",
+      "nif": "Nif",
+      "address": "Address",
+      "city": "City",
+      "zipCode": "Zip Code",
+      "phone1": "Phone 1",
+      "phone2": "Phone 2",
+      "email": "Email",
+      "deleted": "Deleted",
+      "device": "Device",
+      "help": {
+        "deleted": "Field for logical deletion\nshould be false by default"
+      }
+    }
+  }
+}

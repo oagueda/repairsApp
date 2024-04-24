@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (customer()) {
+      <div>
+        <h2 data-cy="customerDetailsHeading"><span jhiTranslate="repairsApp.customer.detail.title">Customer</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ customer()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.name">Name</span></dt>
+          <dd>
+            <span>{{ customer()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.nif">Nif</span></dt>
+          <dd>
+            <span>{{ customer()!.nif }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.address">Address</span></dt>
+          <dd>
+            <span>{{ customer()!.address }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.city">City</span></dt>
+          <dd>
+            <span>{{ customer()!.city }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.zipCode">Zip Code</span></dt>
+          <dd>
+            <span>{{ customer()!.zipCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.phone1">Phone 1</span></dt>
+          <dd>
+            <span>{{ customer()!.phone1 }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.phone2">Phone 2</span></dt>
+          <dd>
+            <span>{{ customer()!.phone2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.customer.email">Email</span></dt>
+          <dd>
+            <span>{{ customer()!.email }}</span>
+          </dd>
+          <dt>
+            <span [ngbTooltip]="'repairsApp.customer.help.deleted' | translate" jhiTranslate="repairsApp.customer.deleted">Deleted</span>
+          </dt>
+          <dd>
+            <span>{{ customer()!.deleted }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/customer', customer()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

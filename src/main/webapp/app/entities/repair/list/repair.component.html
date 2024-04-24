@@ -1,0 +1,181 @@
+<div>
+  <h2 id="page-heading" data-cy="RepairHeading">
+    <span jhiTranslate="repairsApp.repair.home.title">Repairs</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="repairsApp.repair.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-repair"
+        [routerLink]="['/repair/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="repairsApp.repair.home.createLabel">Create a new Repair</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (repairs?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="repairsApp.repair.home.notFound">No Repairs found</span>
+    </div>
+  }
+
+  @if (repairs && repairs.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="observations">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.observations">Observations</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="internalObservations">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.internalObservations">Internal Observations</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.status">Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="closedDate">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.closedDate">Closed Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="budget">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.budget">Budget</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="workDone">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.workDone">Work Done</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="usedMaterial">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.usedMaterial">Used Material</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="customerMaterial">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.customerMaterial">Customer Material</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="importantData">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.importantData">Important Data</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="total">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.total">Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="device.id">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.device">Device</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+          @for (repair of repairs; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/repair', repair.id, 'view']">{{ repair.id }}</a>
+              </td>
+              <td>{{ repair.description }}</td>
+              <td>{{ repair.observations }}</td>
+              <td>{{ repair.internalObservations }}</td>
+              <td [jhiTranslate]="'repairsApp.Status.' + (repair.status ?? 'null')">
+                {{ { null: '', TODO: 'TODO', REVIEW: 'REVIEW', WIP: 'WIP', DONE: 'DONE', DELETED: 'DELETED' }[repair.status ?? 'null'] }}
+              </td>
+              <td>{{ repair.closedDate | formatMediumDatetime }}</td>
+              <td>{{ repair.budget }}</td>
+              <td>{{ repair.workDone }}</td>
+              <td>{{ repair.usedMaterial }}</td>
+              <td>{{ repair.customerMaterial }}</td>
+              <td>{{ repair.importantData }}</td>
+              <td>{{ repair.total }}</td>
+              <td>
+                @if (repair.device) {
+                  <div>
+                    <a [routerLink]="['/device', repair.device.id, 'view']">{{ repair.device.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/repair', repair.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/repair', repair.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(repair)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,27 @@
+{
+  "annotations": {
+    "changelogDate": "20240424142615"
+  },
+  "applications": "*",
+  "documentation": "The hasPattern entity is used to\\nrepresent classic Android pattern lock.\\n@author oagueda.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Pattern",
+  "relationships": [
+    {
+      "otherEntityName": "device",
+      "otherEntityRelationshipName": "pattern",
+      "relationshipName": "device",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

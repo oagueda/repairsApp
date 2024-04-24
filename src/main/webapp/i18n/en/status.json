@@ -1,0 +1,12 @@
+{
+  "repairsApp": {
+    "Status": {
+      "null": "",
+      "TODO": "TODO",
+      "REVIEW": "REVIEW",
+      "WIP": "WIP",
+      "DONE": "DONE",
+      "DELETED": "DELETED"
+    }
+  }
+}

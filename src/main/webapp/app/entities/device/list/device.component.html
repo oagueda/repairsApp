@@ -1,0 +1,211 @@
+<div>
+  <h2 id="page-heading" data-cy="DeviceHeading">
+    <span jhiTranslate="repairsApp.device.home.title">Devices</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="repairsApp.device.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-device"
+        [routerLink]="['/device/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="repairsApp.device.home.createLabel">Create a new Device</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <jhi-filter [filters]="filters"></jhi-filter>
+
+  @if (devices?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="repairsApp.device.home.notFound">No Devices found</span>
+    </div>
+  }
+
+  @if (devices && devices.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.type">Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="brand">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.brand">Brand</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="model">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.model">Model</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="serialNumber">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.serialNumber">Serial Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="warranty">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.warranty">Warranty</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="password">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.password">Password</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="hasPattern">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.hasPattern">Has Pattern</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="simPinCode">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.simPinCode">Sim Pin Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notes">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.notes">Notes</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="deleted">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.deleted">Deleted</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pattern.id">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.pattern">Pattern</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="customer.id">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.device.customer">Customer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (device of devices; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/device', device.id, 'view']">{{ device.id }}</a>
+              </td>
+              <td [jhiTranslate]="'repairsApp.Type.' + (device.type ?? 'null')">
+                {{
+                  { null: '', LAPTOP: 'LAPTOP', DESKTOP: 'DESKTOP', PRINTER: 'PRINTER', PHONE: 'PHONE', TABLET: 'TABLET', OTHER: 'OTHER' }[
+                    device.type ?? 'null'
+                  ]
+                }}
+              </td>
+              <td>{{ device.brand }}</td>
+              <td>{{ device.model }}</td>
+              <td>{{ device.serialNumber }}</td>
+              <td>{{ device.warranty }}</td>
+              <td>{{ device.password }}</td>
+              <td>{{ device.hasPattern }}</td>
+              <td>{{ device.simPinCode }}</td>
+              <td>{{ device.notes }}</td>
+              <td>{{ device.deleted }}</td>
+              <td>
+                @if (device.pattern) {
+                  <div>
+                    <a [routerLink]="['/pattern', device.pattern.id, 'view']">{{ device.pattern.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (device.customer) {
+                  <div>
+                    <a [routerLink]="['/customer', device.customer.id, 'view']">{{ device.customer.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/device', device.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/device', device.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(device)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (devices && devices.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

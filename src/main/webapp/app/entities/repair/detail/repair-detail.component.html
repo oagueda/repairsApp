@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (repair()) {
+      <div>
+        <h2 data-cy="repairDetailsHeading"><span jhiTranslate="repairsApp.repair.detail.title">Repair</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ repair()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.description">Description</span></dt>
+          <dd>
+            <span>{{ repair()!.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.observations">Observations</span></dt>
+          <dd>
+            <span>{{ repair()!.observations }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.internalObservations">Internal Observations</span></dt>
+          <dd>
+            <span>{{ repair()!.internalObservations }}</span>
+          </dd>
+          <dt><span [ngbTooltip]="'repairsApp.repair.help.status' | translate" jhiTranslate="repairsApp.repair.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'repairsApp.Status.' + (repair()!.status ?? 'null')">{{
+              { null: '', TODO: 'TODO', REVIEW: 'REVIEW', WIP: 'WIP', DONE: 'DONE', DELETED: 'DELETED' }[repair()!.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.closedDate">Closed Date</span></dt>
+          <dd>
+            <span>{{ repair()!.closedDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.budget">Budget</span></dt>
+          <dd>
+            <span>{{ repair()!.budget }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.workDone">Work Done</span></dt>
+          <dd>
+            <span>{{ repair()!.workDone }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.usedMaterial">Used Material</span></dt>
+          <dd>
+            <span>{{ repair()!.usedMaterial }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.customerMaterial">Customer Material</span></dt>
+          <dd>
+            <span>{{ repair()!.customerMaterial }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.importantData">Important Data</span></dt>
+          <dd>
+            <span>{{ repair()!.importantData }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.total">Total</span></dt>
+          <dd>
+            <span>{{ repair()!.total }}</span>
+          </dd>
+          <dt><span jhiTranslate="repairsApp.repair.device">Device</span></dt>
+          <dd>
+            @if (repair()!.device) {
+              <div>
+                <a [routerLink]="['/device', repair()!.device?.id, 'view']">{{ repair()!.device?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/repair', repair()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

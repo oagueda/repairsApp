@@ -1,0 +1,87 @@
+{
+  "annotations": {
+    "changelogDate": "20240424142613"
+  },
+  "applications": "*",
+  "documentation": "Device entity.\\n@author oagueda.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "documentation": "The type property is an enumeration",
+      "fieldName": "type",
+      "fieldType": "Type",
+      "fieldTypeDocumentation": "Type enum for Device.\\nMAYBE: This could be an entity with\\nthe posibility to add custom fields\\n@author oagueda.",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "LAPTOP,DESKTOP,PRINTER,PHONE,TABLET,OTHER"
+    },
+    {
+      "fieldName": "brand",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "model",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serialNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "warranty",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "password",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "hasPattern",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "simPinCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "documentation": "Field for logical deletion\\nshould be false by default",
+      "fieldName": "deleted",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Device",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "pattern",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "pattern",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "repair",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "repair",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "customer",
+      "otherEntityRelationshipName": "device",
+      "relationshipName": "customer",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

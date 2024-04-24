@@ -1,0 +1,40 @@
+{
+  "repairsApp": {
+    "device": {
+      "home": {
+        "title": "Devices",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Device",
+        "createOrEditLabel": "Create or edit a Device",
+        "notFound": "No Devices found"
+      },
+      "created": "A new Device is created with identifier {{ param }}",
+      "updated": "A Device is updated with identifier {{ param }}",
+      "deleted": "A Device is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Device {{ id }}?"
+      },
+      "detail": {
+        "title": "Device"
+      },
+      "id": "ID",
+      "type": "Type",
+      "brand": "Brand",
+      "model": "Model",
+      "serialNumber": "Serial Number",
+      "warranty": "Warranty",
+      "password": "Password",
+      "hasPattern": "Has Pattern",
+      "simPinCode": "Sim Pin Code",
+      "notes": "Notes",
+      "deleted": "Deleted",
+      "pattern": "Pattern",
+      "repair": "Repair",
+      "customer": "Customer",
+      "help": {
+        "type": "The type property is an enumeration",
+        "deleted": "Field for logical deletion\nshould be false by default"
+      }
+    }
+  }
+}
