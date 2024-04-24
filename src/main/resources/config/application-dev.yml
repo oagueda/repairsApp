@@ -16,9 +16,10 @@
 logging:
   level:
     ROOT: DEBUG
-    tech.jhipster: DEBUG
-    org.hibernate.SQL: DEBUG
-    xyz.oagueda: DEBUG
+    '[tech.jhipster]': DEBUG
+    '[org.hibernate.SQL]': DEBUG
+    '[xyz.oagueda]': DEBUG
+    '[javax.management]': WARN
 
 spring:
   devtools:
@@ -34,7 +35,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/repairsApp?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
     username: root
-    password:
+    password: root
     hikari:
       poolName: Hikari
       auto-commit: false
