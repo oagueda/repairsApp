@@ -1,13 +1,21 @@
 # TODO
 
 Logical deletion && Hide deleted fields from entities
+
 No user home? -> Login
+
 No user? -> No new register
+
 Home -> Repairs kanban
+
 Navbar -> Styling and remove unused options
+
 Separation of roles
+
 MAYBE: Adding Languages or guide to
+
 MAYBE: Changing color palette from default to catppucin 😻
+
 FUTURE: Deploy instructios
 
 Libraries:
