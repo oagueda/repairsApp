@@ -128,6 +128,9 @@ export class CustomerComponent implements OnInit {
     filters.filterOptions.forEach(filterOption => {
       queryObject[filterOption.name] = filterOption.values;
     });
+
+    queryObject['deleted.equals'] = false; // WorkAround for now to not see deleted
+
     return this.customerService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
