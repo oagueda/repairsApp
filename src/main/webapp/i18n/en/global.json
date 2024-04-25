@@ -9,10 +9,11 @@
         "main": "Entities",
         "adminAuthority": "Authorities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "customer": "Customer",
-        "device": "Device",
-        "repair": "Repair",
-        "pattern": "Pattern"
+        "customer": "Customers",
+        "device": "Devices",
+        "repair": "Repairs",
+        "pattern": "Pattern",
+        "board": "Board"
       },
       "account": {
         "main": "Account",
