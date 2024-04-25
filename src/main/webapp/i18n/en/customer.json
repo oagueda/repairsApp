@@ -12,7 +12,8 @@
       "updated": "A Customer is updated with identifier {{ param }}",
       "deleted": "A Customer is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Customer {{ id }}?"
+        "question": "Are you sure you want to delete Customer {{ id }}?",
+        "forceDeleteQuestion": "Force Deletion"
       },
       "detail": {
         "title": "Customer"
@@ -26,7 +27,7 @@
       "phone1": "Phone 1",
       "phone2": "Phone 2",
       "email": "Email",
-      "deleted": "Deleted",
+      "isDeleted": "Deleted",
       "device": "Device",
       "help": {
         "deleted": "Field for logical deletion\nshould be false by default"

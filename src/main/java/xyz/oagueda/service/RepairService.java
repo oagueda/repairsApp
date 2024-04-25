@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.oagueda.domain.Repair;
+import xyz.oagueda.domain.enumeration.Status;
 import xyz.oagueda.repository.RepairRepository;
 import xyz.oagueda.service.dto.RepairDTO;
 import xyz.oagueda.service.mapper.RepairMapper;
@@ -93,6 +94,6 @@ public class RepairService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Repair : {}", id);
-        repairRepository.deleteById(id);
+        repairRepository.findById(id).orElseThrow().setStatus(Status.DELETED);
     }
 }

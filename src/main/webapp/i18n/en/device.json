@@ -12,7 +12,8 @@
       "updated": "A Device is updated with identifier {{ param }}",
       "deleted": "A Device is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Device {{ id }}?"
+        "question": "Are you sure you want to delete Device {{ id }}?",
+        "forceDeleteQuestion": "Force Deletion"
       },
       "detail": {
         "title": "Device"
@@ -27,7 +28,7 @@
       "hasPattern": "Has Pattern",
       "simPinCode": "Sim Pin Code",
       "notes": "Notes",
-      "deleted": "Deleted",
+      "isDeleted": "Deleted",
       "pattern": "Pattern",
       "repair": "Repair",
       "customer": "Customer",

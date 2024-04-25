@@ -14,6 +14,7 @@ import { CustomerService } from '../service/customer.service';
 })
 export class CustomerDeleteDialogComponent {
   customer?: ICustomer;
+  force: boolean = false;
 
   protected customerService = inject(CustomerService);
   protected activeModal = inject(NgbActiveModal);
@@ -23,7 +24,7 @@ export class CustomerDeleteDialogComponent {
   }
 
   confirmDelete(id: number): void {
-    this.customerService.delete(id).subscribe(() => {
+    this.customerService.delete(id, this.force).subscribe(() => {
       this.activeModal.close(ITEM_DELETED_EVENT);
     });
   }

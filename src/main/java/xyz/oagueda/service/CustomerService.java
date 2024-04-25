@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.oagueda.domain.Customer;
+import xyz.oagueda.domain.Device;
 import xyz.oagueda.repository.CustomerRepository;
 import xyz.oagueda.service.dto.CustomerDTO;
 import xyz.oagueda.service.mapper.CustomerMapper;
+import xyz.oagueda.web.rest.errors.DeleteCustomerWithDevicesException;
 
 /**
  * Service Implementation for managing {@link xyz.oagueda.domain.Customer}.
@@ -21,11 +23,14 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    private final DeviceService deviceService;
+
     private final CustomerMapper customerMapper;
 
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper, DeviceService deviceService) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.deviceService = deviceService;
     }
 
     /**
@@ -90,9 +95,21 @@ public class CustomerService {
      * Delete the customer by id.
      *
      * @param id the id of the entity.
+     * @param force if the deletion should be forced.
      */
-    public void delete(Long id) {
-        log.debug("Request to delete Customer : {}", id);
-        customerRepository.deleteById(id);
+    public void delete(Long id, boolean force) {
+        log.debug("Request to delete Customer : {}, force: {}", id, force);
+        Customer customer = customerRepository.findById(id).orElseThrow();
+        if (force) {
+            for (Device device : customer.getDevices()) {
+                deviceService.delete(device.getId(), true);
+            }
+        }
+        for (Device device : customer.getDevices()) {
+            if (Boolean.FALSE.equals(device.getDeleted())) {
+                throw new DeleteCustomerWithDevicesException();
+            }
+        }
+        customer.setDeleted(true);
     }
 }
