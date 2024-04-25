@@ -146,7 +146,9 @@
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
-    }
+    },
+    "deleteCustomer": "Can not delete Customer with Devices, please delete devices first",
+    "deleteDevice": "Can not delete Device with Repairs, please delete repairs first"
   },
   "footer": "This is your footer"
 }

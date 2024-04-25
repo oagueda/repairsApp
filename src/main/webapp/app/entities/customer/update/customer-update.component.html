@@ -75,24 +75,6 @@
           <label class="form-label" for="field_email" jhiTranslate="repairsApp.customer.email">Email</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
         </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            for="field_deleted"
-            [ngbTooltip]="'repairsApp.customer.help.deleted' | translate"
-            jhiTranslate="repairsApp.customer.deleted"
-            >Deleted</label
-          >
-          <input type="checkbox" class="form-check" name="deleted" id="field_deleted" data-cy="deleted" formControlName="deleted" />
-          @if (editForm.get('deleted')!.invalid && (editForm.get('deleted')!.dirty || editForm.get('deleted')!.touched)) {
-            <div>
-              @if (editForm.get('deleted')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
       </div>
 
       <div>

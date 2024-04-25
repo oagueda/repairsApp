@@ -14,6 +14,7 @@ import { DeviceService } from '../service/device.service';
 })
 export class DeviceDeleteDialogComponent {
   device?: IDevice;
+  force: boolean = false;
 
   protected deviceService = inject(DeviceService);
   protected activeModal = inject(NgbActiveModal);
@@ -23,7 +24,7 @@ export class DeviceDeleteDialogComponent {
   }
 
   confirmDelete(id: number): void {
-    this.deviceService.delete(id).subscribe(() => {
+    this.deviceService.delete(id, this.force).subscribe(() => {
       this.activeModal.close(ITEM_DELETED_EVENT);
     });
   }

@@ -41,7 +41,7 @@
             <column name="notes" type="${clobType}">
                 <constraints nullable="true" />
             </column>
-            <column name="deleted" type="boolean" remarks="Field for logical deletion\nshould be false by default">
+            <column name="deleted" type="boolean" remarks="Field for logical deletion\nshould be false by default" defaultValueBoolean="false">
                 <constraints nullable="false" />
             </column>
             <column name="pattern_id" type="bigint">
