@@ -24,6 +24,8 @@ import routes from './app.routes';
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 
+import { provideAnimations } from '@angular/platform-browser/animations';
+
 const routerFeatures: Array<RouterFeatures> = [
   withComponentInputBinding(),
   withNavigationErrorHandler((e: NavigationError) => {
@@ -45,6 +47,7 @@ if (DEBUG_INFO_ENABLED) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(),
     provideRouter(routes, ...routerFeatures),
     importProvidersFrom(BrowserModule),
     // Set this to true to enable service worker (PWA)
