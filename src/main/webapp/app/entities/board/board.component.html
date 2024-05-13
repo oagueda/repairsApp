@@ -1,16 +1,42 @@
 <h2 id="page-heading" data-cy="RepairHeading">
   <span jhiTranslate="repairsApp.board.home.title">Repairs Board</span>
-
   <div class="d-flex justify-content-end">
-    <button
-      id="jh-create-entity"
-      data-cy="entityCreateButton"
-      class="btn btn-primary jh-create-entity create-repair"
-      [routerLink]="['/repair/new']"
-    >
-      <fa-icon icon="plus"></fa-icon>
-      <span jhiTranslate="repairsApp.repair.home.createLabel">Create a new Repair</span>
-    </button>
+    <div class="btn-group me-3">
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-repair"
+        [routerLink]="['/repair/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="repairsApp.repair.home.createLabel">Create a new Repair</span>
+      </button>
+      <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+            class="btn btn-primary jh-create-entity create-repair"
+            [routerLink]="['/device/new']"
+            ngbDropdownItem
+          >
+            <fa-icon icon="plus"></fa-icon>
+            <span jhiTranslate="repairsApp.device.home.createLabel">Create a new Repair</span>
+          </button>
+          <button
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+            class="btn btn-primary jh-create-entity create-repair"
+            [routerLink]="['/customer/new']"
+            ngbDropdownItem
+          >
+            <fa-icon icon="plus"></fa-icon>
+            <span jhiTranslate="repairsApp.customer.home.createLabel">Create a new Repair</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </h2>
 
