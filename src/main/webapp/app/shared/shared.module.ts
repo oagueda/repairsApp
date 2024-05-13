@@ -8,12 +8,13 @@ import FindLanguageFromKeyPipe from './language/find-language-from-key.pipe';
 import TranslateDirective from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
+import { MaterialLibModule } from './material/material-lib.module';
 
 /**
  * Application wide Module
  */
 @NgModule({
-  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective],
+  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective, MaterialLibModule],
   exports: [
     CommonModule,
     NgbModule,
@@ -23,6 +24,7 @@ import { AlertErrorComponent } from './alert/alert-error.component';
     TranslateModule,
     FindLanguageFromKeyPipe,
     TranslateDirective,
+    MaterialLibModule,
   ],
 })
 export default class SharedModule {}

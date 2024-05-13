@@ -3,7 +3,6 @@ package xyz.oagueda.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import java.io.Serializable;
 import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -17,7 +16,7 @@ import xyz.oagueda.domain.enumeration.Status;
 @Table(name = "repair")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Repair implements Serializable {
+public class Repair extends AbstractAuditingEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
