@@ -14,16 +14,44 @@
   </div>
 </h2>
 
-<div class="board">
-  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.TODO | translate }}" [repairList]="todoRepairs"></jhi-board-list>
-
-  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.REVIEW | translate }}" [repairList]="reviewRepairs"></jhi-board-list>
-
-  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.WIP | translate }}" [repairList]="wipRepairs"></jhi-board-list>
-
-  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.DONE | translate }}" [repairList]="doneRepairs"></jhi-board-list>
-</div>
-
 <jhi-alert-error></jhi-alert-error>
 
 <jhi-alert></jhi-alert>
+
+<div class="board" cdkDropListGroup>
+  <jhi-board-list
+    name="{{ 'repairsApp.repair.statusEnum.' + status.TODO | translate }}"
+    [repairList]="todoRepairs"
+    cdkDropList
+    [cdkDropListData]="todoRepairs"
+    (cdkDropListDropped)="drop($event)"
+    [id]="status.TODO"
+  ></jhi-board-list>
+
+  <jhi-board-list
+    name="{{ 'repairsApp.repair.statusEnum.' + status.REVIEW | translate }}"
+    [repairList]="reviewRepairs"
+    cdkDropList
+    [cdkDropListData]="reviewRepairs"
+    (cdkDropListDropped)="drop($event)"
+    [id]="status.REVIEW"
+  ></jhi-board-list>
+
+  <jhi-board-list
+    name="{{ 'repairsApp.repair.statusEnum.' + status.WIP | translate }}"
+    [repairList]="wipRepairs"
+    cdkDropList
+    [cdkDropListData]="wipRepairs"
+    (cdkDropListDropped)="drop($event)"
+    [id]="status.WIP"
+  ></jhi-board-list>
+
+  <jhi-board-list
+    name="{{ 'repairsApp.repair.statusEnum.' + status.DONE | translate }}"
+    [repairList]="doneRepairs"
+    cdkDropList
+    [cdkDropListData]="doneRepairs"
+    (cdkDropListDropped)="drop($event)"
+    [id]="status.DONE"
+  ></jhi-board-list>
+</div>

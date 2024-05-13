@@ -1,4 +1,4 @@
-<div class="card jh-card board-task">
+<div class="card jh-card board-task" cdkDrag>
   <h6>{{ 'repairsApp.board.task.code' | translate }}{{ repair.id }}</h6>
   @if (device?.type || repair.device?.id) {
     <p>{{ 'repairsApp.board.task.deviceType' | translate }}{{ device?.type ?? repair.device?.id }}</p>

@@ -5,6 +5,7 @@ import BoardListComponent from './board-list/board-list.component';
 import { RepairService } from '../repair/service/repair.service';
 import { IRepair } from '../repair/repair.model';
 import { Status } from '../enumerations/status.model';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 @Component({
   standalone: true,
   selector: 'jhi-board',
@@ -42,5 +43,31 @@ export default class BoardComponent implements OnInit {
     this.doneRepairs = allRepairs.filter(repair => {
       return repair.status === Status.DONE;
     });
+  }
+
+  drop(event: CdkDragDrop<IRepair[]>) {
+    if (event.previousContainer !== event.container) {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, 0);
+      switch (event.container.id) {
+        case Status.TODO:
+          event.container.data[0].status = Status.TODO;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        case Status.REVIEW:
+          event.container.data[0].status = Status.REVIEW;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        case Status.WIP:
+          event.container.data[0].status = Status.WIP;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        case Status.DONE:
+          event.container.data[0].status = Status.DONE;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        default:
+          break;
+      }
+    }
   }
 }
