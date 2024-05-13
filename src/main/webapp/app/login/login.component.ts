@@ -32,7 +32,7 @@ export default class LoginComponent implements OnInit, AfterViewInit {
     // if already authenticated then navigate to home page
     this.accountService.identity().subscribe(() => {
       if (this.accountService.isAuthenticated()) {
-        this.router.navigate(['repair']);
+        this.router.navigate(['board']);
       }
     });
   }
@@ -47,7 +47,7 @@ export default class LoginComponent implements OnInit, AfterViewInit {
         this.authenticationError.set(false);
         if (!this.router.getCurrentNavigation()) {
           // There were no routing during login (eg from navigationToStoredUrl)
-          this.router.navigate(['repair']);
+          this.router.navigate(['board']);
         }
       },
       error: () => this.authenticationError.set(true),
