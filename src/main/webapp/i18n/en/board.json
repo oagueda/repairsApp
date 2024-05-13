@@ -3,6 +3,11 @@
     "board": {
       "home": {
         "title": "Repairs Board"
+      },
+      "task": {
+        "code": "Repair Number: ",
+        "deviceType": "Device Type: ",
+        "customer": "Customer Name: "
       }
     }
   }

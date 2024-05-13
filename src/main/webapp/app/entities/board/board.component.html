@@ -14,6 +14,16 @@
   </div>
 </h2>
 
+<div class="board">
+  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.TODO | translate }}" [repairList]="todoRepairs"></jhi-board-list>
+
+  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.REVIEW | translate }}" [repairList]="reviewRepairs"></jhi-board-list>
+
+  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.WIP | translate }}" [repairList]="wipRepairs"></jhi-board-list>
+
+  <jhi-board-list name="{{ 'repairsApp.repair.statusEnum.' + status.DONE | translate }}" [repairList]="doneRepairs"></jhi-board-list>
+</div>
+
 <jhi-alert-error></jhi-alert-error>
 
 <jhi-alert></jhi-alert>

@@ -1,0 +1,9 @@
+<div class="card jh-card board-task">
+  <h6>{{ 'repairsApp.board.task.code' | translate }}{{ repair.id }}</h6>
+  @if (device?.type || repair.device?.id) {
+    <p>{{ 'repairsApp.board.task.deviceType' | translate }}{{ device?.type ?? repair.device?.id }}</p>
+  }
+  @if (customer?.name) {
+    <p>{{ 'repairsApp.board.task.customer' | translate }}{{ customer?.name }}</p>
+  }
+</div>

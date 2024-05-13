@@ -32,6 +32,12 @@
       "device": "Device",
       "help": {
         "status": "The status property is an enumeration"
+      },
+      "statusEnum": {
+        "TODO": "Todo",
+        "REVIEW": "Review",
+        "WIP": "Work In Progress",
+        "DONE": "Done"
       }
     }
   }
