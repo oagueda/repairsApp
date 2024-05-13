@@ -1,5 +1,6 @@
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, inject } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   Router,
   RouterFeatures,
@@ -24,8 +25,6 @@ import routes from './app.routes';
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 
-import { provideAnimations } from '@angular/platform-browser/animations';
-
 const routerFeatures: Array<RouterFeatures> = [
   withComponentInputBinding(),
   withNavigationErrorHandler((e: NavigationError) => {
@@ -47,9 +46,9 @@ if (DEBUG_INFO_ENABLED) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
     provideRouter(routes, ...routerFeatures),
     importProvidersFrom(BrowserModule),
+    importProvidersFrom(BrowserAnimationsModule),
     // Set this to true to enable service worker (PWA)
     importProvidersFrom(ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })),
     importProvidersFrom(TranslationModule),
