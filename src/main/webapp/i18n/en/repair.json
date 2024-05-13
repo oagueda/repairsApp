@@ -5,6 +5,8 @@
         "title": "Repairs",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Repair",
+        "createLabelDevice": "Create a new Device and Repair",
+        "createLabelCustomer": "Create a new Customer, Device and Repair",
         "createOrEditLabel": "Create or edit a Repair",
         "notFound": "No Repairs found"
       },

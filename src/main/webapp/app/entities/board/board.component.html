@@ -6,7 +6,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-repair"
-        [routerLink]="['/repair/new']"
+        (click)="openModal(0)"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="repairsApp.repair.home.createLabel">Create a new Repair</span>
@@ -18,21 +18,21 @@
             id="jh-create-entity"
             data-cy="entityCreateButton"
             class="btn btn-primary jh-create-entity create-repair"
-            [routerLink]="['/device/new']"
+            (click)="openModal(1)"
             ngbDropdownItem
           >
             <fa-icon icon="plus"></fa-icon>
-            <span jhiTranslate="repairsApp.device.home.createLabel">Create a new Repair</span>
+            <span jhiTranslate="repairsApp.repair.home.createLabelDevice"></span>
           </button>
           <button
             id="jh-create-entity"
             data-cy="entityCreateButton"
             class="btn btn-primary jh-create-entity create-repair"
-            [routerLink]="['/customer/new']"
+            (click)="openModal(2)"
             ngbDropdownItem
           >
             <fa-icon icon="plus"></fa-icon>
-            <span jhiTranslate="repairsApp.customer.home.createLabel">Create a new Repair</span>
+            <span jhiTranslate="repairsApp.repair.home.createLabelCustomer"></span>
           </button>
         </div>
       </div>
