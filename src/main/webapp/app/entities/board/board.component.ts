@@ -34,14 +34,26 @@ export default class BoardComponent implements OnInit {
     this.todoRepairs = allRepairs.filter(repair => {
       return repair.status === Status.TODO;
     });
+    this.todoRepairs.sort((a, b) => {
+      return new Date(b.lastModifiedDate ?? 0).getTime() - new Date(a.lastModifiedDate ?? 0).getTime();
+    });
     this.reviewRepairs = allRepairs.filter(repair => {
       return repair.status === Status.REVIEW;
+    });
+    this.reviewRepairs.sort((a, b) => {
+      return new Date(b.lastModifiedDate ?? 0).getTime() - new Date(a.lastModifiedDate ?? 0).getTime();
     });
     this.wipRepairs = allRepairs.filter(repair => {
       return repair.status === Status.WIP;
     });
+    this.wipRepairs.sort((a, b) => {
+      return new Date(b.lastModifiedDate ?? 0).getTime() - new Date(a.lastModifiedDate ?? 0).getTime();
+    });
     this.doneRepairs = allRepairs.filter(repair => {
       return repair.status === Status.DONE;
+    });
+    this.doneRepairs.sort((a, b) => {
+      return new Date(b.lastModifiedDate ?? 0).getTime() - new Date(a.lastModifiedDate ?? 0).getTime();
     });
   }
 

@@ -16,6 +16,10 @@ export interface IRepair {
   importantData?: boolean | null;
   total?: string | null;
   device?: Pick<IDevice, 'id'> | null;
+  createdBy?: string | null;
+  createdDate?: Date | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: Date | null;
 }
 
 export type NewRepair = Omit<IRepair, 'id'> & { id: null };
