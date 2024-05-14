@@ -6,6 +6,8 @@ import { DeviceUpdateComponent } from '../device/update/device-update.component'
 import { Options } from '../enumerations/options.model';
 import SharedModule from 'app/shared/shared.module';
 import { MatStepper } from '@angular/material/stepper';
+import { IDevice } from '../device/device.model';
+import { ICustomer } from '../customer/customer.model';
 
 @Component({
   standalone: true,
@@ -19,6 +21,9 @@ export class ModalComponent implements OnInit {
   selectedIndex = 0;
   optionsEnum = Options;
 
+  previousCustomer?: ICustomer;
+  previousDevice?: IDevice;
+
   activeModal = inject(NgbActiveModal);
 
   ngOnInit(): void {
@@ -30,10 +35,17 @@ export class ModalComponent implements OnInit {
     this.activeModal.close();
   }
 
-  next(stepper: MatStepper): void {
+  next(event: ICustomer | IDevice | null, stepper: MatStepper): void {
     if (this.options.length == this.selectedIndex + 1) {
       this.activeModal.close();
       return;
+    }
+    if (event && event.id != -1) {
+      if (this.selectedIndex == 0) {
+        this.previousCustomer = event;
+      } else {
+        this.previousDevice = event;
+      }
     }
     if (stepper.selected?.completed != null) {
       stepper.selected.completed = true;

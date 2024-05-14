@@ -25,8 +25,18 @@ import { RepairFormService, RepairFormGroup } from './repair-form.service';
 })
 export class RepairUpdateComponent implements OnInit {
   @Input() isModal = false;
+  @Input() set selectDevice(previousDevice: IDevice) {
+    if (previousDevice.id != -1) {
+      this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
+        this.devicesSharedCollection,
+        previousDevice,
+      );
+
+      this.editForm.get('device')?.setValue(previousDevice);
+    }
+  }
   @Output() closeModal = new EventEmitter<boolean>();
-  @Output() completed = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<null>();
   isSaving = false;
   repair: IRepair | null = null;
   statusValues = Object.keys(Status);
@@ -98,7 +108,7 @@ export class RepairUpdateComponent implements OnInit {
 
   protected onSaveSuccess(): void {
     if (this.isModal) {
-      this.completed.emit(true);
+      this.completed.emit(null);
     } else {
       this.previousState();
     }

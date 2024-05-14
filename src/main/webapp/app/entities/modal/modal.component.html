@@ -20,17 +20,27 @@
         @switch (option) {
           @case (optionsEnum.CUSTOMER) {
             <mat-step label="{{ 'repairsApp.customer.home.createLabel' | translate }}" [completed]="false" [editable]="false">
-              <jhi-customer-update [isModal]="true" (closeModal)="close()" (completed)="next(stepper)"></jhi-customer-update>
+              <jhi-customer-update [isModal]="true" (closeModal)="close()" (completed)="next($event, stepper)"></jhi-customer-update>
             </mat-step>
           }
           @case (optionsEnum.REPAIR) {
             <mat-step label="{{ 'repairsApp.repair.home.createLabel' | translate }}" [completed]="false" [editable]="false">
-              <jhi-repair-update [isModal]="true" (closeModal)="close()" (completed)="next(stepper)"></jhi-repair-update>
+              <jhi-repair-update
+                [isModal]="true"
+                (closeModal)="close()"
+                (completed)="next($event, stepper)"
+                [selectDevice]="previousDevice ?? { id: -1 }"
+              ></jhi-repair-update>
             </mat-step>
           }
           @case (optionsEnum.DEVICE) {
             <mat-step label="{{ 'repairsApp.device.home.createLabel' | translate }}" [completed]="false" [editable]="false">
-              <jhi-device-update [isModal]="true" (closeModal)="close()" (completed)="next(stepper)"></jhi-device-update>
+              <jhi-device-update
+                [isModal]="true"
+                (closeModal)="close()"
+                (completed)="next($event, stepper)"
+                [selectCustomer]="previousCustomer ?? { id: -1 }"
+              ></jhi-device-update>
             </mat-step>
           }
         }

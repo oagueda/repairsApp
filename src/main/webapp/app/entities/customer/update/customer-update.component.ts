@@ -20,7 +20,7 @@ import { CustomerFormService, CustomerFormGroup } from './customer-form.service'
 export class CustomerUpdateComponent implements OnInit {
   @Input() isModal = false;
   @Output() closeModal = new EventEmitter<boolean>();
-  @Output() completed = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<ICustomer>();
   isSaving = false;
   customer: ICustomer | null = null;
 
@@ -60,14 +60,14 @@ export class CustomerUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICustomer>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => this.onSaveSuccess(response.body ?? { id: -1 }),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
+  protected onSaveSuccess(newCustomer: ICustomer): void {
     if (this.isModal) {
-      this.completed.emit(true);
+      this.completed.emit(newCustomer);
     } else {
       this.previousState();
     }

@@ -27,8 +27,17 @@ import { DeviceFormService, DeviceFormGroup } from './device-form.service';
 })
 export class DeviceUpdateComponent implements OnInit {
   @Input() isModal = false;
+  @Input() set selectCustomer(previousCustomer: ICustomer) {
+    if (previousCustomer.id != -1) {
+      this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+        this.customersSharedCollection,
+        previousCustomer,
+      );
+      this.editForm.get('customer')?.setValue(previousCustomer);
+    }
+  }
   @Output() closeModal = new EventEmitter<boolean>();
-  @Output() completed = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<IDevice>();
   isSaving = false;
   device: IDevice | null = null;
   typeValues = Object.keys(Type);
@@ -97,14 +106,14 @@ export class DeviceUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDevice>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => this.onSaveSuccess(response.body ?? { id: -1 }),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
+  protected onSaveSuccess(newDevice: IDevice): void {
     if (this.isModal) {
-      this.completed.emit(true);
+      this.completed.emit(newDevice);
     } else {
       this.previousState();
     }
