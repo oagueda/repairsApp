@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -26,6 +26,18 @@ import { DeviceFormService, DeviceFormGroup } from './device-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class DeviceUpdateComponent implements OnInit {
+  @Input() isModal = false;
+  @Input() set selectCustomer(previousCustomer: ICustomer) {
+    if (previousCustomer.id != -1) {
+      this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+        this.customersSharedCollection,
+        previousCustomer,
+      );
+      this.editForm.get('customer')?.setValue(previousCustomer);
+    }
+  }
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<IDevice>();
   isSaving = false;
   device: IDevice | null = null;
   typeValues = Object.keys(Type);
@@ -88,15 +100,23 @@ export class DeviceUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDevice>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => this.onSaveSuccess(response.body ?? { id: -1 }),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveSuccess(newDevice: IDevice): void {
+    if (this.isModal) {
+      this.completed.emit(newDevice);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {

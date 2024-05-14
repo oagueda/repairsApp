@@ -5,7 +5,7 @@
         "title": "Customers",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Customer",
-        "createOrEditLabel": "Create or edit a Customer",
+        "editLabel": "Edit a Customer",
         "notFound": "No Customers found"
       },
       "created": "A new Customer is created with identifier {{ param }}",

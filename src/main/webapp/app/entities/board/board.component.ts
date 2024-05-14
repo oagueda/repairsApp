@@ -5,7 +5,10 @@ import BoardListComponent from './board-list/board-list.component';
 import { RepairService } from '../repair/service/repair.service';
 import { IRepair } from '../repair/repair.model';
 import { Status } from '../enumerations/status.model';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '../modal/modal.component';
+import { Options } from '../enumerations/options.model';
 @Component({
   standalone: true,
   selector: 'jhi-board',
@@ -21,6 +24,7 @@ export default class BoardComponent implements OnInit {
   status = Status;
 
   protected repairService = inject(RepairService);
+  private modalService = inject(NgbModal);
 
   ngOnInit(): void {
     this.repairService.query({ size: 999 }).subscribe({
@@ -28,6 +32,32 @@ export default class BoardComponent implements OnInit {
         this.separateRepairsByStatus(response.body ?? []);
       },
     });
+  }
+
+  drop(event: CdkDragDrop<IRepair[]>) {
+    if (event.previousContainer !== event.container) {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, 0);
+      switch (event.container.id) {
+        case Status.TODO:
+          event.container.data[0].status = Status.TODO;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        case Status.REVIEW:
+          event.container.data[0].status = Status.REVIEW;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        case Status.WIP:
+          event.container.data[0].status = Status.WIP;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        case Status.DONE:
+          event.container.data[0].status = Status.DONE;
+          this.repairService.update(event.container.data[0]).subscribe();
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   protected separateRepairsByStatus(allRepairs: IRepair[]): void {
@@ -57,29 +87,42 @@ export default class BoardComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<IRepair[]>) {
-    if (event.previousContainer !== event.container) {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, 0);
-      switch (event.container.id) {
-        case Status.TODO:
-          event.container.data[0].status = Status.TODO;
-          this.repairService.update(event.container.data[0]).subscribe();
-          break;
-        case Status.REVIEW:
-          event.container.data[0].status = Status.REVIEW;
-          this.repairService.update(event.container.data[0]).subscribe();
-          break;
-        case Status.WIP:
-          event.container.data[0].status = Status.WIP;
-          this.repairService.update(event.container.data[0]).subscribe();
-          break;
-        case Status.DONE:
-          event.container.data[0].status = Status.DONE;
-          this.repairService.update(event.container.data[0]).subscribe();
-          break;
-        default:
-          break;
-      }
+  openModal(option: number): void {
+    switch (option) {
+      case 0:
+        this.openRepair();
+        break;
+      case 1:
+        this.openDevice();
+        break;
+      case 2:
+        this.openCustomer();
+        break;
+      default:
+        break;
     }
+  }
+
+  openRepair(): void {
+    const modalRef = this.modalService.open(ModalComponent, { fullscreen: true });
+    modalRef.componentInstance.options = [Options.REPAIR];
+    modalRef.closed.subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+
+  openDevice(): void {
+    const modalRef = this.modalService.open(ModalComponent, { fullscreen: true });
+    modalRef.componentInstance.options = [Options.DEVICE, Options.REPAIR];
+    modalRef.closed.subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+  openCustomer(): void {
+    const modalRef = this.modalService.open(ModalComponent, { fullscreen: true });
+    modalRef.componentInstance.options = [Options.CUSTOMER, Options.DEVICE, Options.REPAIR];
+    modalRef.closed.subscribe(() => {
+      this.ngOnInit();
+    });
   }
 }

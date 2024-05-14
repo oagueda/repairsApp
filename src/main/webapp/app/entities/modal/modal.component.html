@@ -1,0 +1,50 @@
+<div class="modal-content p-4">
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+  @if (options.length === 1) {
+    @switch (options[0]) {
+      @case (optionsEnum.CUSTOMER) {
+        <jhi-customer-update [isModal]="true" (closeModal)="close()" (completed)="close()"></jhi-customer-update>
+      }
+      @case (optionsEnum.REPAIR) {
+        <jhi-repair-update [isModal]="true" (closeModal)="close()" (completed)="close()"></jhi-repair-update>
+      }
+      @case (optionsEnum.DEVICE) {
+        <jhi-device-update [isModal]="true" (closeModal)="close()" (completed)="close()"></jhi-device-update>
+      }
+    }
+  } @else if (options.length > 1) {
+    <mat-stepper [linear]="true" [(selectedIndex)]="selectedIndex" #stepper>
+      @for (option of options; track $index) {
+        @switch (option) {
+          @case (optionsEnum.CUSTOMER) {
+            <mat-step label="{{ 'repairsApp.customer.home.createLabel' | translate }}" [completed]="false" [editable]="false">
+              <jhi-customer-update [isModal]="true" (closeModal)="close()" (completed)="next($event, stepper)"></jhi-customer-update>
+            </mat-step>
+          }
+          @case (optionsEnum.REPAIR) {
+            <mat-step label="{{ 'repairsApp.repair.home.createLabel' | translate }}" [completed]="false" [editable]="false">
+              <jhi-repair-update
+                [isModal]="true"
+                (closeModal)="close()"
+                (completed)="next($event, stepper)"
+                [selectDevice]="previousDevice ?? { id: -1 }"
+              ></jhi-repair-update>
+            </mat-step>
+          }
+          @case (optionsEnum.DEVICE) {
+            <mat-step label="{{ 'repairsApp.device.home.createLabel' | translate }}" [completed]="false" [editable]="false">
+              <jhi-device-update
+                [isModal]="true"
+                (closeModal)="close()"
+                (completed)="next($event, stepper)"
+                [selectCustomer]="previousCustomer ?? { id: -1 }"
+              ></jhi-device-update>
+            </mat-step>
+          }
+        }
+      }
+    </mat-stepper>
+  }
+</div>

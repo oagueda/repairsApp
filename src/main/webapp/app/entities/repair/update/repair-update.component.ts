@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -24,6 +24,19 @@ import { RepairFormService, RepairFormGroup } from './repair-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class RepairUpdateComponent implements OnInit {
+  @Input() isModal = false;
+  @Input() set selectDevice(previousDevice: IDevice) {
+    if (previousDevice.id != -1) {
+      this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
+        this.devicesSharedCollection,
+        previousDevice,
+      );
+
+      this.editForm.get('device')?.setValue(previousDevice);
+    }
+  }
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<null>();
   isSaving = false;
   repair: IRepair | null = null;
   statusValues = Object.keys(Status);
@@ -82,6 +95,10 @@ export class RepairUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IRepair>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -90,7 +107,11 @@ export class RepairUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    if (this.isModal) {
+      this.completed.emit(null);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {
