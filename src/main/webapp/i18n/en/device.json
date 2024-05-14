@@ -5,7 +5,7 @@
         "title": "Devices",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Device",
-        "createOrEditLabel": "Create or edit a Device",
+        "editLabel": "Edit a Device",
         "notFound": "No Devices found"
       },
       "created": "A new Device is created with identifier {{ param }}",

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -24,6 +24,9 @@ import { RepairFormService, RepairFormGroup } from './repair-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class RepairUpdateComponent implements OnInit {
+  @Input() isModal = false;
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<boolean>();
   isSaving = false;
   repair: IRepair | null = null;
   statusValues = Object.keys(Status);
@@ -82,6 +85,10 @@ export class RepairUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IRepair>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -90,7 +97,11 @@ export class RepairUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    if (this.isModal) {
+      this.completed.emit(true);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {

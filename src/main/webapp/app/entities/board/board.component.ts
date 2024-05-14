@@ -5,7 +5,7 @@ import BoardListComponent from './board-list/board-list.component';
 import { RepairService } from '../repair/service/repair.service';
 import { IRepair } from '../repair/repair.model';
 import { Status } from '../enumerations/status.model';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '../modal/modal.component';
 import { Options } from '../enumerations/options.model';
@@ -106,14 +106,23 @@ export default class BoardComponent implements OnInit {
   openRepair(): void {
     const modalRef = this.modalService.open(ModalComponent, { fullscreen: true });
     modalRef.componentInstance.options = [Options.REPAIR];
+    modalRef.closed.subscribe(() => {
+      this.ngOnInit();
+    });
   }
 
   openDevice(): void {
     const modalRef = this.modalService.open(ModalComponent, { fullscreen: true });
     modalRef.componentInstance.options = [Options.DEVICE, Options.REPAIR];
+    modalRef.closed.subscribe(() => {
+      this.ngOnInit();
+    });
   }
   openCustomer(): void {
     const modalRef = this.modalService.open(ModalComponent, { fullscreen: true });
     modalRef.componentInstance.options = [Options.CUSTOMER, Options.DEVICE, Options.REPAIR];
+    modalRef.closed.subscribe(() => {
+      this.ngOnInit();
+    });
   }
 }

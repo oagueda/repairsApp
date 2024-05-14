@@ -7,7 +7,7 @@
         "createLabel": "Create a new Repair",
         "createLabelDevice": "Create a new Device and Repair",
         "createLabelCustomer": "Create a new Customer, Device and Repair",
-        "createOrEditLabel": "Create or edit a Repair",
+        "editLabel": "Edit a Repair",
         "notFound": "No Repairs found"
       },
       "created": "A new Repair is created with identifier {{ param }}",

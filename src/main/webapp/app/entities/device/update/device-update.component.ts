@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -26,6 +26,9 @@ import { DeviceFormService, DeviceFormGroup } from './device-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class DeviceUpdateComponent implements OnInit {
+  @Input() isModal = false;
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<boolean>();
   isSaving = false;
   device: IDevice | null = null;
   typeValues = Object.keys(Type);
@@ -88,6 +91,10 @@ export class DeviceUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDevice>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -96,7 +103,11 @@ export class DeviceUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    if (this.isModal) {
+      this.completed.emit(true);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {
