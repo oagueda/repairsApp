@@ -1,12 +1,12 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
@@ -23,7 +23,7 @@ import { DeviceFormService, DeviceFormGroup } from './device-form.service';
   standalone: true,
   selector: 'jhi-device-update',
   templateUrl: './device-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgSelectModule],
 })
 export class DeviceUpdateComponent implements OnInit {
   @Input() isModal = false;
@@ -41,6 +41,8 @@ export class DeviceUpdateComponent implements OnInit {
   isSaving = false;
   device: IDevice | null = null;
   typeValues = Object.keys(Type);
+
+  customerSearchTerm = new Subject<string>();
 
   patternsCollection: IPattern[] = [];
   customersSharedCollection: ICustomer[] = [];
@@ -68,6 +70,10 @@ export class DeviceUpdateComponent implements OnInit {
       }
 
       this.loadRelationshipsOptions();
+    });
+
+    this.customerSearchTerm.subscribe(term => {
+      this.searchCustomer(term);
     });
   }
 
@@ -102,6 +108,43 @@ export class DeviceUpdateComponent implements OnInit {
 
   emitCloseModal(): void {
     this.closeModal.emit(true);
+  }
+
+  protected searchCustomer(term: string): void {
+    let customersByName: ICustomer[] = [];
+    let customersByNif: ICustomer[] = [];
+    this.customersSharedCollection = [];
+
+    if (term && term.trim().length > 0) {
+      this.customerService.query({ 'name.contains': term }).subscribe({
+        next: response => {
+          customersByName = response.body ?? [];
+        },
+        complete: () => {
+          this.customerService.query({ 'nif.contains': term }).subscribe({
+            next: response => {
+              customersByNif = response.body ?? [];
+            },
+            complete: () => {
+              for (const customer of customersByName) {
+                this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+                  this.customersSharedCollection,
+                  customer,
+                );
+              }
+              for (const customer of customersByNif) {
+                this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+                  this.customersSharedCollection,
+                  customer,
+                );
+              }
+            },
+          });
+        },
+      });
+    } else {
+      this.loadRelationshipsOptions();
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDevice>>): void {
