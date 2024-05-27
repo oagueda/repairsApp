@@ -136,19 +136,23 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_customer" jhiTranslate="repairsApp.device.customer">Customer</label>
-          <select
-            class="form-control"
+          <ng-select
             id="field_customer"
             data-cy="customer"
             name="customer"
             formControlName="customer"
             [compareWith]="compareCustomer"
+            [items]="customersSharedCollection"
+            bindLabel="name"
+            [typeahead]="customerSearchTerm"
           >
-            <option [ngValue]="null"></option>
-            @for (customerOption of customersSharedCollection; track $index) {
-              <option [ngValue]="customerOption">{{ customerOption.id }}</option>
-            }
-          </select>
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{ item.name + ' ' + item.nif }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+              <span>{{ item.name + ' ' + item.nif }}</span>
+            </ng-template>
+          </ng-select>
         </div>
       </div>
 

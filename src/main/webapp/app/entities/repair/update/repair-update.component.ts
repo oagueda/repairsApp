@@ -1,12 +1,12 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
@@ -16,12 +16,13 @@ import { Status } from 'app/entities/enumerations/status.model';
 import { RepairService } from '../service/repair.service';
 import { IRepair } from '../repair.model';
 import { RepairFormService, RepairFormGroup } from './repair-form.service';
+import { Type } from 'app/entities/enumerations/type.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-repair-update',
   templateUrl: './repair-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgSelectModule],
 })
 export class RepairUpdateComponent implements OnInit {
   @Input() isModal = false;
@@ -40,6 +41,8 @@ export class RepairUpdateComponent implements OnInit {
   isSaving = false;
   repair: IRepair | null = null;
   statusValues = Object.keys(Status);
+
+  deviceSearchTerm = new Subject<string>();
 
   devicesSharedCollection: IDevice[] = [];
 
@@ -63,6 +66,10 @@ export class RepairUpdateComponent implements OnInit {
       }
 
       this.loadRelationshipsOptions();
+    });
+
+    this.deviceSearchTerm.subscribe(term => {
+      this.searchDevice(term);
     });
   }
 
@@ -97,6 +104,73 @@ export class RepairUpdateComponent implements OnInit {
 
   emitCloseModal(): void {
     this.closeModal.emit(true);
+  }
+
+  protected searchDevice(term: string): void {
+    let deviceByType: IDevice[] = [];
+    let deviceByBrand: IDevice[] = [];
+    let deviceByModel: IDevice[] = [];
+    let deviceBySerialNumber: IDevice[] = [];
+    this.devicesSharedCollection = [];
+
+    if (term && term.trim().length > 0) {
+      this.deviceService.query({ 'brand.contains': term }).subscribe({
+        next: response => {
+          deviceByBrand = response.body ?? [];
+        },
+        complete: () => {
+          this.deviceService.query({ 'model.contains': term }).subscribe({
+            next: response => {
+              deviceByModel = response.body ?? [];
+            },
+            complete: () => {
+              this.deviceService.query({ 'serialNumber.contains': term }).subscribe({
+                next: response => {
+                  deviceBySerialNumber = response.body ?? [];
+                },
+                complete: () => {
+                  for (const device of deviceByBrand) {
+                    this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
+                      this.devicesSharedCollection,
+                      device,
+                    );
+                  }
+                  for (const device of deviceByModel) {
+                    this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
+                      this.devicesSharedCollection,
+                      device,
+                    );
+                  }
+                  for (const device of deviceBySerialNumber) {
+                    this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
+                      this.devicesSharedCollection,
+                      device,
+                    );
+                  }
+                  if (term.toUpperCase() in Type) {
+                    this.deviceService.query({ 'type.in': [term.toUpperCase()] }).subscribe({
+                      next: response => {
+                        deviceByType = response.body ?? [];
+                      },
+                      complete: () => {
+                        for (const device of deviceByType) {
+                          this.devicesSharedCollection = this.deviceService.addDeviceToCollectionIfMissing<IDevice>(
+                            this.devicesSharedCollection,
+                            device,
+                          );
+                        }
+                      },
+                    });
+                  }
+                },
+              });
+            },
+          });
+        },
+      });
+    } else {
+      this.loadRelationshipsOptions();
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IRepair>>): void {

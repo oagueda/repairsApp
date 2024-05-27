@@ -17,6 +17,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RepairDeleteDialogComponent } from '../delete/repair-delete-dialog.component';
 import { EntityArrayResponseType, RepairService } from '../service/repair.service';
 import { IRepair } from '../repair.model';
+import { IDevice } from 'app/entities/device/device.model';
 
 @Component({
   standalone: true,
