@@ -151,5 +151,5 @@
     "deleteCustomer": "Can not delete Customer with Devices, please delete devices first",
     "deleteDevice": "Can not delete Device with Repairs, please delete repairs first"
   },
-  "footer": "This is your footer"
+  "footer": "Repairs App AGPL-3.0-or-later Copyright oagueda 2024"
 }
