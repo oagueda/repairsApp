@@ -1,6 +1,10 @@
 package xyz.oagueda.service;
 
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -8,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
 import xyz.oagueda.domain.*; // for static metamodels
-import xyz.oagueda.domain.Repair;
 import xyz.oagueda.repository.RepairRepository;
 import xyz.oagueda.service.criteria.RepairCriteria;
 import xyz.oagueda.service.dto.RepairDTO;
@@ -24,7 +26,7 @@ import xyz.oagueda.service.mapper.RepairMapper;
  */
 @Service
 @Transactional(readOnly = true)
-public class RepairQueryService extends QueryService<Repair> {
+public class RepairQueryService extends SpecQueryService<Repair> {
 
     private final Logger log = LoggerFactory.getLogger(RepairQueryService.class);
 
@@ -96,6 +98,18 @@ public class RepairQueryService extends QueryService<Repair> {
                 specification = specification.and(
                     buildSpecification(criteria.getDeviceId(), root -> root.join(Repair_.device, JoinType.LEFT).get(Device_.id))
                 );
+            }
+
+            if (criteria.getFilter() != null) {
+                List<SingularAttribute<Repair, ?>> defaultColumns = Arrays.asList(
+                    Repair_.id,
+                    Repair_.description,
+                    Repair_.status,
+                    Repair_.closedDate
+                );
+                Map<String, String> referencedColumns = Map.of("device", "type");
+
+                specification = specification.and(createLikeFilter(criteria.getFilter(), defaultColumns, referencedColumns));
             }
         }
         return specification;

@@ -24,6 +24,20 @@
 
   <jhi-alert></jhi-alert>
 
+  <div class="d-flex flex-row content-around">
+    <fa-icon icon="search" class="p-2"></fa-icon>
+    <input
+      type="text"
+      class="form-control mb-2"
+      name="search"
+      id="search"
+      data-cy="search"
+      placeholder="Type to search"
+      [(ngModel)]="filter"
+      (keyup)="load()"
+    />
+  </div>
+
   @if (repairs?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="repairsApp.repair.home.notFound">No Repairs found</span>
@@ -49,20 +63,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="observations">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.observations">Observations</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="internalObservations">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.internalObservations">Internal Observations</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="status">
               <div class="d-flex">
                 <span jhiTranslate="repairsApp.repair.status">Status</span>
@@ -73,48 +73,6 @@
             <th scope="col" jhiSortBy="closedDate">
               <div class="d-flex">
                 <span jhiTranslate="repairsApp.repair.closedDate">Closed Date</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="budget">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.budget">Budget</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="workDone">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.workDone">Work Done</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="usedMaterial">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.usedMaterial">Used Material</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="customerMaterial">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.customerMaterial">Customer Material</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="importantData">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.importantData">Important Data</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="total">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.total">Total</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -135,22 +93,14 @@
                 <a [routerLink]="['/repair', repair.id, 'view']">{{ repair.id }}</a>
               </td>
               <td>{{ repair.description }}</td>
-              <td>{{ repair.observations }}</td>
-              <td>{{ repair.internalObservations }}</td>
               <td [jhiTranslate]="'repairsApp.Status.' + (repair.status ?? 'null')">
                 {{ { null: '', TODO: 'TODO', REVIEW: 'REVIEW', WIP: 'WIP', DONE: 'DONE', DELETED: 'DELETED' }[repair.status ?? 'null'] }}
               </td>
               <td>{{ repair.closedDate | formatMediumDatetime }}</td>
-              <td>{{ repair.budget }}</td>
-              <td>{{ repair.workDone }}</td>
-              <td>{{ repair.usedMaterial }}</td>
-              <td>{{ repair.customerMaterial }}</td>
-              <td>{{ repair.importantData }}</td>
-              <td>{{ repair.total }}</td>
               <td>
                 @if (repair.device) {
                   <div>
-                    <a [routerLink]="['/device', repair.device.id, 'view']">{{ repair.device.id }}</a>
+                    <a [routerLink]="['/device', repair.device.id, 'view']">{{ repair.device.type ?? '' }}</a>
                   </div>
                 }
               </td>

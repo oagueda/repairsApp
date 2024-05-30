@@ -43,6 +43,8 @@ export class DeviceComponent implements OnInit {
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
 
+  filter = '';
+
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
@@ -134,6 +136,7 @@ export class DeviceComponent implements OnInit {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(this.sortState()),
+      filter: this.filter,
     };
     filters.filterOptions.forEach(filterOption => {
       queryObject[filterOption.name] = filterOption.values;

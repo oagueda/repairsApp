@@ -15,7 +15,7 @@ export interface IDevice {
   notes?: string | null;
   deleted?: boolean | null;
   pattern?: Pick<IPattern, 'id'> | null;
-  customer?: Pick<ICustomer, 'id'> | null;
+  customer?: ICustomer | null;
 }
 
 export type NewDevice = Omit<IDevice, 'id'> & { id: null };

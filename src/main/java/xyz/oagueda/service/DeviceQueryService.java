@@ -1,6 +1,10 @@
 package xyz.oagueda.service;
 
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -8,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
 import xyz.oagueda.domain.*; // for static metamodels
-import xyz.oagueda.domain.Device;
 import xyz.oagueda.repository.DeviceRepository;
 import xyz.oagueda.service.criteria.DeviceCriteria;
 import xyz.oagueda.service.dto.DeviceDTO;
@@ -24,7 +26,7 @@ import xyz.oagueda.service.mapper.DeviceMapper;
  */
 @Service
 @Transactional(readOnly = true)
-public class DeviceQueryService extends QueryService<Device> {
+public class DeviceQueryService extends SpecQueryService<Device> {
 
     private final Logger log = LoggerFactory.getLogger(DeviceQueryService.class);
 
@@ -118,6 +120,19 @@ public class DeviceQueryService extends QueryService<Device> {
                 specification = specification.and(
                     buildSpecification(criteria.getCustomerId(), root -> root.join(Device_.customer, JoinType.LEFT).get(Customer_.id))
                 );
+            }
+
+            if (criteria.getFilter() != null) {
+                List<SingularAttribute<Device, ?>> defaultColumns = Arrays.asList(
+                    Device_.id,
+                    Device_.type,
+                    Device_.brand,
+                    Device_.model,
+                    Device_.notes
+                );
+                Map<String, String> referencedColumns = Map.of("customer", "name,nif");
+
+                specification = specification.and(createLikeFilter(criteria.getFilter(), defaultColumns, referencedColumns));
             }
         }
         return specification;
