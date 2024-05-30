@@ -31,7 +31,9 @@
       "device": "Device",
       "help": {
         "deleted": "Field for logical deletion\nshould be false by default"
-      }
+      },
+      "seeRepairs": "See Repairs",
+      "seeDevices": "See Devices"
     }
   }
 }
