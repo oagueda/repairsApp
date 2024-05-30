@@ -15,7 +15,7 @@ export interface IRepair {
   customerMaterial?: string | null;
   importantData?: boolean | null;
   total?: string | null;
-  device?: Pick<IDevice, 'id'> | null;
+  device?: IDevice | null;
   createdBy?: string | null;
   createdDate?: Date | null;
   lastModifiedBy?: string | null;

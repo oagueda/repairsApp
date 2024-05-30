@@ -42,6 +42,8 @@ export class RepairComponent implements OnInit {
 
   sortState = sortStateSignal({});
 
+  filter = '';
+
   itemsPerPage = ITEMS_PER_PAGE;
   links: WritableSignal<{ [key: string]: undefined | { [key: string]: string | undefined } }> = signal({});
   hasMorePage = computed(() => !!this.links().next);
@@ -147,6 +149,7 @@ export class RepairComponent implements OnInit {
     this.isLoading = true;
     const queryObject: any = {
       size: this.itemsPerPage,
+      filter: this.filter,
     };
     if (this.hasMorePage()) {
       Object.assign(queryObject, this.links().next);

@@ -26,6 +26,20 @@
 
   <jhi-filter [filters]="filters"></jhi-filter>
 
+  <div class="d-flex flex-row content-around">
+    <fa-icon icon="search" class="p-2"></fa-icon>
+    <input
+      type="text"
+      class="form-control mb-2"
+      name="search"
+      id="search"
+      data-cy="search"
+      placeholder="Type to search"
+      [(ngModel)]="filter"
+      (keyup)="load()"
+    />
+  </div>
+
   @if (devices?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="repairsApp.device.home.notFound">No Devices found</span>
@@ -65,51 +79,10 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="serialNumber">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.device.serialNumber">Serial Number</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="warranty">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.device.warranty">Warranty</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="password">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.device.password">Password</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="hasPattern">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.device.hasPattern">Has Pattern</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="simPinCode">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.device.simPinCode">Sim Pin Code</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="notes">
               <div class="d-flex">
                 <span jhiTranslate="repairsApp.device.notes">Notes</span>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="pattern.id">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.device.pattern">Pattern</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -137,23 +110,11 @@
               </td>
               <td>{{ device.brand }}</td>
               <td>{{ device.model }}</td>
-              <td>{{ device.serialNumber }}</td>
-              <td>{{ device.warranty }}</td>
-              <td>{{ device.password }}</td>
-              <td>{{ device.hasPattern }}</td>
-              <td>{{ device.simPinCode }}</td>
               <td>{{ device.notes }}</td>
-              <td>
-                @if (device.pattern) {
-                  <div>
-                    <a [routerLink]="['/pattern', device.pattern.id, 'view']">{{ device.pattern.id }}</a>
-                  </div>
-                }
-              </td>
               <td>
                 @if (device.customer) {
                   <div>
-                    <a [routerLink]="['/customer', device.customer.id, 'view']">{{ device.customer.id }}</a>
+                    <a [routerLink]="['/customer', device.customer.id, 'view']">{{ device.customer.name + ' ' + device.customer.nif }}</a>
                   </div>
                 }
               </td>
