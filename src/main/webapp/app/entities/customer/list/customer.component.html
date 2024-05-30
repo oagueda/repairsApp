@@ -100,6 +100,14 @@
               <td>{{ customer.phone1 }}</td>
               <td>{{ customer.email }}</td>
               <td class="text-end">
+                <button type="button" (click)="seeOther('/repair', customer.id)" class="btn btn-primary">
+                  <fa-icon icon="screwdriver-wrench"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeRepairs">See Repairs</span>
+                </button>
+
+                <button type="button" (click)="seeOther('/device', customer.id)" class="btn btn-primary">
+                  <fa-icon icon="laptop"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeDevices">See Devices</span>
+                </button>
+
                 <div class="btn-group">
                   <a [routerLink]="['/customer', customer.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>

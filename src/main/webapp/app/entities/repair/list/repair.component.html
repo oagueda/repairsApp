@@ -24,6 +24,8 @@
 
   <jhi-alert></jhi-alert>
 
+  <jhi-filter [filters]="filters"></jhi-filter>
+
   <div class="d-flex flex-row content-around">
     <fa-icon icon="search" class="p-2"></fa-icon>
     <input
@@ -83,6 +85,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="device.id">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.customer">Customer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -101,6 +109,15 @@
                 @if (repair.device) {
                   <div>
                     <a [routerLink]="['/device', repair.device.id, 'view']">{{ repair.device.type ?? '' }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (repair.device && repair.device.customer?.id) {
+                  <div>
+                    <a [routerLink]="['/customer', repair.device.customer?.id, 'view']">{{
+                      repair.device.customer?.name ?? '' + ' ' + repair.device.customer?.nif
+                    }}</a>
                   </div>
                 }
               </td>

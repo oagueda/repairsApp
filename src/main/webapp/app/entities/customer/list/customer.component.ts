@@ -11,11 +11,13 @@ import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { FilterComponent, FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter';
+import { FilterComponent, FilterOptions, IFilterOptions, IFilterOption, FilterOption } from 'app/shared/filter';
 import { ICustomer } from '../customer.model';
 
 import { EntityArrayResponseType, CustomerService } from '../service/customer.service';
 import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.component';
+import { DeviceService } from 'app/entities/device/service/device.service';
+import { IDevice } from 'app/entities/device/device.model';
 
 @Component({
   standalone: true,
@@ -54,6 +56,7 @@ export class CustomerComponent implements OnInit {
   protected sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  protected deviceService = inject(DeviceService);
 
   trackId = (_index: number, item: ICustomer): number => this.customerService.getCustomerIdentifier(item);
 
@@ -154,5 +157,42 @@ export class CustomerComponent implements OnInit {
         queryParams: queryParamsObj,
       });
     });
+  }
+
+  protected seeOther(route: string, customerId: number): void {
+    const queryParamsObj: any = {
+      page: 1,
+      size: 20,
+      sort: 'id,asc',
+    };
+    let filterOption: FilterOption;
+    if (route === '/device') {
+      filterOption = new FilterOption('customerId.equals', [customerId.toString()]);
+      queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
+
+      this.ngZone.run(() => {
+        this.router.navigate([route], {
+          queryParams: queryParamsObj,
+        });
+      });
+    } else {
+      let devices: IDevice[] = [];
+      let devicesIds: string[] = [];
+      this.deviceService.query({ 'customerId.equals': customerId }).subscribe(res => {
+        devices = res.body ?? [];
+        for (const device of devices) {
+          devicesIds.push(device.id.toString());
+        }
+        filterOption = new FilterOption('deviceId.in', devicesIds);
+
+        queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
+
+        this.ngZone.run(() => {
+          this.router.navigate([route], {
+            queryParams: queryParamsObj,
+          });
+        });
+      });
+    }
   }
 }
