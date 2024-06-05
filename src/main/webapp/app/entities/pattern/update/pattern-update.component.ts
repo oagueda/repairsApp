@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IPattern } from '../pattern.model';
 import { PatternService } from '../service/pattern.service';
 import { PatternFormService, PatternFormGroup } from './pattern-form.service';
-
+import PatternLock from 'vanilla-pattern-lock';
 @Component({
   standalone: true,
   selector: 'jhi-pattern-update',
@@ -20,6 +20,8 @@ import { PatternFormService, PatternFormGroup } from './pattern-form.service';
 export class PatternUpdateComponent implements OnInit {
   isSaving = false;
   pattern: IPattern | null = null;
+
+  lock = new PatternLock();
 
   protected patternService = inject(PatternService);
   protected patternFormService = inject(PatternFormService);
@@ -34,6 +36,10 @@ export class PatternUpdateComponent implements OnInit {
       if (pattern) {
         this.updateForm(pattern);
       }
+    });
+
+    this.lock.render(document.getElementById('lockContainer')!).on('complete', (pattern: number) => {
+      this.editForm.get('code')?.setValue(pattern.toString());
     });
   }
 
