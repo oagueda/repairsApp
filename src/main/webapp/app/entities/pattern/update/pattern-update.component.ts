@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { IPattern } from '../pattern.model';
 import { PatternService } from '../service/pattern.service';
 import { PatternFormService, PatternFormGroup } from './pattern-form.service';
 import PatternLock from 'vanilla-pattern-lock';
+import { IDevice } from 'app/entities/device/device.model';
 @Component({
   standalone: true,
   selector: 'jhi-pattern-update',
@@ -18,10 +19,14 @@ import PatternLock from 'vanilla-pattern-lock';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class PatternUpdateComponent implements OnInit {
+  @Input() isModal = false;
   isSaving = false;
   pattern: IPattern | null = null;
 
   lock = new PatternLock();
+
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<IDevice>();
 
   protected patternService = inject(PatternService);
   protected patternFormService = inject(PatternFormService);
@@ -57,15 +62,23 @@ export class PatternUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPattern>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => this.onSaveSuccess(response.body ?? { id: -1 }),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveSuccess(newPattern: IPattern): void {
+    if (this.isModal) {
+      this.completed.emit(newPattern);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {

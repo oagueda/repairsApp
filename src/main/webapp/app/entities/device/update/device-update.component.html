@@ -100,6 +100,20 @@
           }
         </div>
 
+        @if (editForm.get('hasPattern')?.value) {
+          <div class="mb-3">
+            <button type="button" (click)="openPattern()" id="save-entity" data-cy="patternCreateButton" class="btn btn-primary">
+              <fa-icon icon="unlock"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.device.newPattern">Save</span>
+            </button>
+          </div>
+        }
+
+        @if (editForm.get('pattern')?.value) {
+          <div class="mb-3">
+            <input type="text" disabled class="form-control" value="{{ editForm.get('pattern')?.value?.code ?? '' }}" />
+          </div>
+        }
+
         <div class="mb-3">
           <label class="form-label" for="field_simPinCode" jhiTranslate="repairsApp.device.simPinCode">Sim Pin Code</label>
           <input
@@ -115,23 +129,6 @@
         <div class="mb-3">
           <label class="form-label" for="field_notes" jhiTranslate="repairsApp.device.notes">Notes</label>
           <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes"></textarea>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_pattern" jhiTranslate="repairsApp.device.pattern">Pattern</label>
-          <select
-            class="form-control"
-            id="field_pattern"
-            data-cy="pattern"
-            name="pattern"
-            formControlName="pattern"
-            [compareWith]="comparePattern"
-          >
-            <option [ngValue]="null"></option>
-            @for (patternOption of patternsCollection; track $index) {
-              <option [ngValue]="patternOption">{{ patternOption.id }}</option>
-            }
-          </select>
         </div>
 
         <div class="mb-3">

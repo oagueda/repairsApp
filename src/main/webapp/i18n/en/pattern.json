@@ -5,7 +5,7 @@
         "title": "Patterns",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Pattern",
-        "createOrEditLabel": "Create or edit a Pattern",
+        "editLabel": "Edit a Pattern",
         "notFound": "No Patterns found"
       },
       "created": "A new Pattern is created with identifier {{ param }}",

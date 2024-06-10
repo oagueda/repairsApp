@@ -4,4 +4,6 @@ export enum Options {
   REPAIR = 'REPAIR',
 
   DEVICE = 'DEVICE',
+
+  PATTERN = 'PATTERN',
 }

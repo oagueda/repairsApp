@@ -13,6 +13,9 @@
       @case (optionsEnum.DEVICE) {
         <jhi-device-update [isModal]="true" (closeModal)="close()" (completed)="close()"></jhi-device-update>
       }
+      @case (optionsEnum.PATTERN) {
+        <jhi-pattern-update [isModal]="true" (closeModal)="close()" (completed)="setPattern($event)"></jhi-pattern-update>
+      }
     }
   } @else if (options.length > 1) {
     <mat-stepper [linear]="true" [(selectedIndex)]="selectedIndex" #stepper>

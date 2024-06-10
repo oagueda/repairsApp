@@ -18,6 +18,9 @@ import { Type } from 'app/entities/enumerations/type.model';
 import { DeviceService } from '../service/device.service';
 import { IDevice } from '../device.model';
 import { DeviceFormService, DeviceFormGroup } from './device-form.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Options } from 'app/entities/enumerations/options.model';
+import { ModalComponent } from 'app/entities/modal/modal.component';
 
 @Component({
   standalone: true,
@@ -54,6 +57,7 @@ export class DeviceUpdateComponent implements OnInit {
   protected patternService = inject(PatternService);
   protected customerService = inject(CustomerService);
   protected activatedRoute = inject(ActivatedRoute);
+  private modalService = inject(NgbModal);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DeviceFormGroup = this.deviceFormService.createDeviceFormGroup();
@@ -108,6 +112,14 @@ export class DeviceUpdateComponent implements OnInit {
 
   emitCloseModal(): void {
     this.closeModal.emit(true);
+  }
+
+  openPattern(): void {
+    const modalRef = this.modalService.open(ModalComponent, { fullscreen: false });
+    modalRef.componentInstance.options = [Options.PATTERN];
+    modalRef.closed.subscribe((res: IPattern) => {
+      this.editForm.get('pattern')?.setValue(res);
+    });
   }
 
   protected searchCustomer(term: string): void {

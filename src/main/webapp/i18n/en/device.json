@@ -32,6 +32,7 @@
       "pattern": "Pattern",
       "repair": "Repair",
       "customer": "Customer",
+      "newPattern": "New Pattern",
       "help": {
         "type": "The type property is an enumeration",
         "deleted": "Field for logical deletion\nshould be false by default"
