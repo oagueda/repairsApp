@@ -8,12 +8,14 @@ import SharedModule from 'app/shared/shared.module';
 import { MatStepper } from '@angular/material/stepper';
 import { IDevice } from '../device/device.model';
 import { ICustomer } from '../customer/customer.model';
+import { PatternUpdateComponent } from '../pattern/update/pattern-update.component';
+import { IPattern } from '../pattern/pattern.model';
 
 @Component({
   standalone: true,
   templateUrl: 'modal.component.html',
   styleUrl: 'modal.component.scss',
-  imports: [CustomerUpdateComponent, RepairUpdateComponent, DeviceUpdateComponent, SharedModule],
+  imports: [CustomerUpdateComponent, RepairUpdateComponent, DeviceUpdateComponent, SharedModule, PatternUpdateComponent],
 })
 export class ModalComponent implements OnInit {
   @Input() options!: Options[];
@@ -33,6 +35,10 @@ export class ModalComponent implements OnInit {
   }
   close(): void {
     this.activeModal.close();
+  }
+
+  setPattern(pattern: IPattern): void {
+    this.activeModal.close(pattern);
   }
 
   next(event: ICustomer | IDevice | null, stepper: MatStepper): void {

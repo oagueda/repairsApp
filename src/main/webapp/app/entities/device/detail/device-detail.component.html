@@ -55,10 +55,6 @@
           <dd>
             <span>{{ device()!.notes }}</span>
           </dd>
-          <dt><span [ngbTooltip]="'repairsApp.device.help.deleted' | translate" jhiTranslate="repairsApp.device.deleted">Deleted</span></dt>
-          <dd>
-            <span>{{ device()!.deleted }}</span>
-          </dd>
           <dt><span jhiTranslate="repairsApp.device.pattern">Pattern</span></dt>
           <dd>
             @if (device()!.pattern) {
@@ -83,6 +79,10 @@
 
         <button type="button" [routerLink]="['/device', device()!.id, 'edit']" class="btn btn-primary">
           <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+
+        <button type="button" (click)="seeOther(device()!.id)" class="btn btn-primary">
+          <fa-icon icon="screwdriver-wrench"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeRepairs">See Repairs</span>
         </button>
       </div>
     }

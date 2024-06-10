@@ -14,7 +14,7 @@ export interface IDevice {
   simPinCode?: string | null;
   notes?: string | null;
   deleted?: boolean | null;
-  pattern?: Pick<IPattern, 'id'> | null;
+  pattern?: IPattern | null;
   customer?: ICustomer | null;
 }
 

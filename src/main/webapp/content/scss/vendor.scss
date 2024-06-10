@@ -12,4 +12,4 @@ eg $input-color: red;
 @import 'bootswatch/dist/zephyr/bootswatch';
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~@ng-select/ng-select/themes/default.theme.css';
-/* jhipster-needle-scss-add-vendor JHipster will add new css style */
+@import '~vanilla-pattern-lock/dist/vanilla-pattern-lock.css'; /* jhipster-needle-scss-add-vendor JHipster will add new css style */

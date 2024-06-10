@@ -94,6 +94,7 @@
     "ngx-infinite-scroll": "17.0.0",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
+    "vanilla-pattern-lock": "^0.3.0",
     "zone.js": "0.14.4"
   },
   "devDependencies": {
