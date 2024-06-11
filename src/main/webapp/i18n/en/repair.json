@@ -33,6 +33,7 @@
       "total": "Total",
       "device": "Device",
       "customer": "Customer",
+      "user": "User",
       "help": {
         "status": "The status property is an enumeration"
       },

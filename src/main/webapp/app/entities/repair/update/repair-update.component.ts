@@ -17,6 +17,8 @@ import { RepairService } from '../service/repair.service';
 import { IRepair } from '../repair.model';
 import { RepairFormService, RepairFormGroup } from './repair-form.service';
 import { Type } from 'app/entities/enumerations/type.model';
+import { UserService } from 'app/entities/user/service/user.service';
+import { IUser } from 'app/entities/user/user.model';
 
 @Component({
   standalone: true,
@@ -43,8 +45,10 @@ export class RepairUpdateComponent implements OnInit {
   statusValues = Object.keys(Status);
 
   deviceSearchTerm = new Subject<string>();
+  userSearchTerm = new Subject<string>();
 
   devicesSharedCollection: IDevice[] = [];
+  usersSharedCollection: IUser[] = [];
 
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
@@ -52,11 +56,14 @@ export class RepairUpdateComponent implements OnInit {
   protected repairFormService = inject(RepairFormService);
   protected deviceService = inject(DeviceService);
   protected activatedRoute = inject(ActivatedRoute);
+  protected userService = inject(UserService);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: RepairFormGroup = this.repairFormService.createRepairFormGroup();
 
   compareDevice = (o1: IDevice | null, o2: IDevice | null): boolean => this.deviceService.compareDevice(o1, o2);
+
+  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ repair }) => {
@@ -70,6 +77,10 @@ export class RepairUpdateComponent implements OnInit {
 
     this.deviceSearchTerm.subscribe(term => {
       this.searchDevice(term);
+    });
+
+    this.userSearchTerm.subscribe(term => {
+      this.searchUser(term);
     });
   }
 
@@ -173,6 +184,19 @@ export class RepairUpdateComponent implements OnInit {
     }
   }
 
+  protected searchUser(term: string): void {
+    this.usersSharedCollection = [];
+    if (term && term.trim().length > 0) {
+      this.userService.query({ 'login.contains': term }).subscribe({
+        next: response => {
+          this.usersSharedCollection = response.body ?? [];
+        },
+      });
+    } else {
+      this.loadRelationshipsOptions();
+    }
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IRepair>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -209,5 +233,11 @@ export class RepairUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDevice[]>) => res.body ?? []))
       .pipe(map((devices: IDevice[]) => this.deviceService.addDeviceToCollectionIfMissing<IDevice>(devices, this.repair?.device)))
       .subscribe((devices: IDevice[]) => (this.devicesSharedCollection = devices));
+
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.repair?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 }

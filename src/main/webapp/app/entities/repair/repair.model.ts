@@ -1,6 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { IDevice } from 'app/entities/device/device.model';
 import { Status } from 'app/entities/enumerations/status.model';
+import { IUser } from '../user/user.model';
 
 export interface IRepair {
   id: number;
@@ -20,6 +21,7 @@ export interface IRepair {
   createdDate?: Date | null;
   lastModifiedBy?: string | null;
   lastModifiedDate?: Date | null;
+  user?: IUser | null;
 }
 
 export type NewRepair = Omit<IRepair, 'id'> & { id: null };

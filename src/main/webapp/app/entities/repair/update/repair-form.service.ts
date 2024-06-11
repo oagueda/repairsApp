@@ -96,11 +96,9 @@ export class RepairFormService {
   }
 
   private getFormDefaults(): RepairFormDefaults {
-    const currentTime = dayjs();
-
     return {
       id: null,
-      closedDate: currentTime,
+      closedDate: null,
       importantData: false,
     };
   }

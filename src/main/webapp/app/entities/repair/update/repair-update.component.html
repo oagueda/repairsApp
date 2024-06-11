@@ -20,6 +20,27 @@
         }
 
         <div class="mb-3">
+          <label class="form-label" for="field_user" jhiTranslate="repairsApp.repair.user">User</label>
+          <ng-select
+            id="field_user"
+            data-cy="user"
+            name="user"
+            formControlName="user"
+            [compareWith]="compareUser"
+            [items]="usersSharedCollection"
+            bindLabel="name"
+            [typeahead]="userSearchTerm"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{ item.login }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+              <span>{{ item.login }}</span>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_description" jhiTranslate="repairsApp.repair.description">Description</label>
           <textarea
             class="form-control"
@@ -82,21 +103,6 @@
               }
             </div>
           }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_closedDate" jhiTranslate="repairsApp.repair.closedDate">Closed Date</label>
-          <div class="d-flex">
-            <input
-              id="field_closedDate"
-              data-cy="closedDate"
-              type="datetime-local"
-              class="form-control"
-              name="closedDate"
-              formControlName="closedDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
         </div>
 
         <div class="mb-3">
