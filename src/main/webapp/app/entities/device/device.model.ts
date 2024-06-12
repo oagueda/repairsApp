@@ -16,6 +16,10 @@ export interface IDevice {
   deleted?: boolean | null;
   pattern?: IPattern | null;
   customer?: ICustomer | null;
+  createdBy?: string | null;
+  createdDate?: Date | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: Date | null;
 }
 
 export type NewDevice = Omit<IDevice, 'id'> & { id: null };

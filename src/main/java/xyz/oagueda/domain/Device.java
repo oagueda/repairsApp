@@ -3,7 +3,6 @@ package xyz.oagueda.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -18,7 +17,7 @@ import xyz.oagueda.domain.enumeration.Type;
 @Table(name = "device")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Device implements Serializable {
+public class Device extends AbstractAuditingEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 

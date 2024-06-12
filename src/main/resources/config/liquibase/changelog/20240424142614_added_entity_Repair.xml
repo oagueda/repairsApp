@@ -50,6 +50,9 @@
             <column name="device_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="created_by" type="varchar(60)">
                 <constraints nullable="false" />
             </column>

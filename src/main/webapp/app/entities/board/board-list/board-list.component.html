@@ -1,8 +1,8 @@
-<p>{{ name }} - {{ repairList.length }}</p>
+<p>{{ name }} - {{ listTotal ?? repairList.length }}</p>
 <ul class="board-list card jh-card">
   @for (repair of repairList; track repair.id) {
     <jhi-board-task [repair]="repair"></jhi-board-task>
   } @empty {
-    <li>There are no items.</li>
+    <li>There are no repairs.</li>
   }
 </ul>

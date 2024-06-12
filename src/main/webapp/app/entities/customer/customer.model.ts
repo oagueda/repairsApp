@@ -9,6 +9,10 @@ export interface ICustomer {
   phone2?: string | null;
   email?: string | null;
   deleted?: boolean | null;
+  createdBy?: string | null;
+  createdDate?: Date | null;
+  lastModifiedBy?: string | null;
+  lastModifiedDate?: Date | null;
 }
 
 export type NewCustomer = Omit<ICustomer, 'id'> & { id: null };

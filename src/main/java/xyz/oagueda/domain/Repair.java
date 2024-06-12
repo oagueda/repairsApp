@@ -73,6 +73,9 @@ public class Repair extends AbstractAuditingEntity<Long> {
     @JsonIgnoreProperties(value = { "pattern", "repairs", "customer" }, allowSetters = true)
     private Device device;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -242,6 +245,14 @@ public class Repair extends AbstractAuditingEntity<Long> {
     public Repair device(Device device) {
         this.setDevice(device);
         return this;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
