@@ -15,5 +15,7 @@ export default class BoardListComponent {
   @Input()
   name!: string;
   @Input()
+  listTotal?: number;
+  @Input()
   repairList!: IRepair[];
 }

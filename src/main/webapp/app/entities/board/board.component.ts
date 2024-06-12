@@ -23,15 +23,13 @@ export default class BoardComponent implements OnInit {
   doneRepairs: IRepair[] = [];
   status = Status;
 
+  doneRepairsTotal = 0;
+
   protected repairService = inject(RepairService);
   private modalService = inject(NgbModal);
 
   ngOnInit(): void {
-    this.repairService.query({ size: 999 }).subscribe({
-      next: response => {
-        this.separateRepairsByStatus(response.body ?? []);
-      },
-    });
+    this.load();
   }
 
   drop(event: CdkDragDrop<IRepair[]>) {
@@ -40,24 +38,32 @@ export default class BoardComponent implements OnInit {
       switch (event.container.id) {
         case Status.TODO:
           event.container.data[0].status = Status.TODO;
-          this.repairService.update(event.container.data[0]).subscribe();
+          this.repairService.update(event.container.data[0]).subscribe(() => this.load());
           break;
         case Status.REVIEW:
           event.container.data[0].status = Status.REVIEW;
-          this.repairService.update(event.container.data[0]).subscribe();
+          this.repairService.update(event.container.data[0]).subscribe(() => this.load());
           break;
         case Status.WIP:
           event.container.data[0].status = Status.WIP;
-          this.repairService.update(event.container.data[0]).subscribe();
+          this.repairService.update(event.container.data[0]).subscribe(() => this.load());
           break;
         case Status.DONE:
           event.container.data[0].status = Status.DONE;
-          this.repairService.update(event.container.data[0]).subscribe();
+          this.repairService.update(event.container.data[0]).subscribe(() => this.load());
           break;
         default:
           break;
       }
     }
+  }
+
+  protected load(): void {
+    this.repairService.query({ size: 999 }).subscribe({
+      next: response => {
+        this.separateRepairsByStatus(response.body ?? []);
+      },
+    });
   }
 
   protected separateRepairsByStatus(allRepairs: IRepair[]): void {
@@ -85,6 +91,8 @@ export default class BoardComponent implements OnInit {
     this.doneRepairs.sort((a, b) => {
       return new Date(b.lastModifiedDate ?? 0).getTime() - new Date(a.lastModifiedDate ?? 0).getTime();
     });
+    this.doneRepairsTotal = this.doneRepairs.length;
+    this.doneRepairs = this.doneRepairs.slice(0, 5);
   }
 
   openModal(option: number): void {

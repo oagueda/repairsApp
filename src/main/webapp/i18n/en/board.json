@@ -7,7 +7,9 @@
       "task": {
         "code": "Repair Number: ",
         "deviceType": "Device Type: ",
-        "customer": "Customer Name: "
+        "customer": "Customer Name: ",
+        "assigned": "Assigned user: ",
+        "notAssigned": "None"
       }
     }
   }

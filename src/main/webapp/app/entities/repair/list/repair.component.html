@@ -85,7 +85,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="device.id">
+            <th scope="col" jhiSortBy="device.customer.name">
+              <div class="d-flex">
+                <span jhiTranslate="repairsApp.repair.customer">Customer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
               <div class="d-flex">
                 <span jhiTranslate="repairsApp.repair.customer">Customer</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -118,6 +124,13 @@
                     <a [routerLink]="['/customer', repair.device.customer?.id, 'view']">{{
                       repair.device.customer?.name ?? '' + ' ' + repair.device.customer?.nif
                     }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (repair.user) {
+                  <div>
+                    <p>{{ repair.user.login ?? '' }}</p>
                   </div>
                 }
               </td>

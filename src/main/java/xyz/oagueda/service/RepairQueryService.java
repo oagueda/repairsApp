@@ -107,8 +107,7 @@ public class RepairQueryService extends SpecQueryService<Repair> {
                     Repair_.status,
                     Repair_.closedDate
                 );
-                Map<String, String> referencedColumns = Map.of("device", "type");
-
+                Map<String, String> referencedColumns = Map.of("device", "type", "user", "login");
                 specification = specification.and(createLikeFilter(criteria.getFilter(), defaultColumns, referencedColumns));
             }
         }

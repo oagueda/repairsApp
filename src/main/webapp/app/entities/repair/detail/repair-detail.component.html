@@ -15,6 +15,10 @@
           <dd>
             <span>{{ repair()!.id }}</span>
           </dd>
+          <dt><span jhiTranslate="repairsApp.repair.user">User</span></dt>
+          <dd>
+            <span>{{ repair()!.user?.login ?? '' }}</span>
+          </dd>
           <dt><span jhiTranslate="repairsApp.repair.description">Description</span></dt>
           <dd>
             <span>{{ repair()!.description }}</span>

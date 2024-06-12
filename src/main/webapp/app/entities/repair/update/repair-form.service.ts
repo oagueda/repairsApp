@@ -43,6 +43,7 @@ type RepairFormGroupContent = {
   importantData: FormControl<RepairFormRawValue['importantData']>;
   total: FormControl<RepairFormRawValue['total']>;
   device: FormControl<RepairFormRawValue['device']>;
+  user: FormControl<RepairFormRawValue['user']>;
 };
 
 export type RepairFormGroup = FormGroup<RepairFormGroupContent>;
@@ -78,6 +79,7 @@ export class RepairFormService {
       importantData: new FormControl(repairRawValue.importantData),
       total: new FormControl(repairRawValue.total),
       device: new FormControl(repairRawValue.device),
+      user: new FormControl(repairRawValue.user),
     });
   }
 

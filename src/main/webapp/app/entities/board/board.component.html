@@ -42,7 +42,9 @@
 
 <jhi-alert-error></jhi-alert-error>
 
-<jhi-alert></jhi-alert>
+<!-- * Removed cause it does spam a lot while moving repairs
+<jhi-alert></jhi-alert> 
+-->
 
 <div class="board" cdkDropListGroup>
   <jhi-board-list
@@ -74,6 +76,7 @@
 
   <jhi-board-list
     name="{{ 'repairsApp.repair.statusEnum.' + status.DONE | translate }}"
+    [listTotal]="doneRepairsTotal"
     [repairList]="doneRepairs"
     cdkDropList
     [cdkDropListData]="doneRepairs"
