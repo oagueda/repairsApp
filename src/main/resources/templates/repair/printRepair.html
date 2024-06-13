@@ -1,0 +1,145 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{repair.title}">Repair Report Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      body {
+        border: 2px solid black;
+        padding: 1%;
+        margin: 1%;
+      }
+      table {
+        width: 100%;
+      }
+      .header-table,
+      .header-table tr,
+      .header-table td {
+        border: 2px solid black;
+        border-collapse: collapse;
+      }
+      p {
+        text-align: center;
+      }
+      .pattern-circle {
+        display: inline-block;
+        width: 25px !important;
+        height: 25px !important;
+        border: 1px solid black;
+        border-radius: 50%;
+      }
+      .w-25 {
+        width: 25%;
+      }
+      .w-33 {
+        width: 33%;
+      }
+      .w-50 {
+        width: 50%;
+      }
+      .w-66 {
+        width: 66%;
+      }
+      .w-75 {
+        width: 75%;
+      }
+      .w-100 {
+        width: 100%;
+      }
+      .data-header {
+        text-decoration: underline;
+      }
+      .notas {
+        border: 2px solid black;
+      }
+      .align-top {
+        vertical-align: top;
+      }
+      .text-align-center {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="header-table">
+      <tr>
+        <td rowspan="2" class="w-25">IMAGEN</td>
+        <td>TEXTO PRINCIPAL EMPRESA</td>
+        <td class="w-25">Fecha: 01/01/2024</td>
+      </tr>
+      <tr>
+        <td>Reporte de reparacion</td>
+        <td>Nº 1234</td>
+      </tr>
+    </table>
+    <p>DATOS DEL CLIENTE</p>
+    <table>
+      <tr>
+        <td class="w-33"><span class="data-header"> Nombre del Cliente: </span> <span></span></td>
+        <td colspan="2" class="w-66"><span class="data-header"> NIF: </span> <span></span></td>
+      </tr>
+      <tr>
+        <td class="w-33"><span class="data-header"> Direccion: </span> <span></span></td>
+        <td class="w-33"><span class="data-header"> Ciudad: </span> <span></span></td>
+        <td class="w-33"><span class="data-header"> Codigo postal: </span> <span></span></td>
+      </tr>
+      <tr>
+        <td class="w-33"><span class="data-header"> Mail: </span> <span></span></td>
+        <td class="w-33"><span class="data-header"> Telefono 1: </span> <span></span></td>
+        <td class="w-33"><span class="data-header"> Telefono 2: </span> <span></span></td>
+      </tr>
+    </table>
+    <p>DATOS DEL SISTEMA</p>
+    <table>
+      <tr>
+        <td class="w-25"><span class="data-header"> Tipo: </span> <span></span></td>
+        <td class="w-25"><span class="data-header"> Marca: </span> <span></span></td>
+        <td class="w-25"><span class="data-header"> Modelo: </span> <span></span></td>
+      </tr>
+      <tr>
+        <td colspan="3"><span class="data-header"> Numero Serie: </span> <span></span></td>
+      </tr>
+      <tr>
+        <td class="w-33"><span class="data-header"> Garantía: </span> <span></span></td>
+        <td class="w-33"><span class="data-header"> Contraseña: </span> <span></span></td>
+        <td class="w-33"><span class="data-header"> SIM: </span> <span></span></td>
+      </tr>
+      <tr>
+        <td class="align-top" th:classappend="${hasPattern} ? w-75 : w-100">
+          <span class="data-header"> Notas: </span>
+          <div class="notas"></div>
+        </td>
+        <td th:if="${hasPattern}" class="w-25 h-50 text-align-center">
+          <table>
+            <tr>
+              <td class="pattern-circle"></td>
+              <td class="pattern-circle"></td>
+              <td class="pattern-circle"></td>
+            </tr>
+            <tr>
+              <td class="pattern-circle"></td>
+              <td class="pattern-circle"></td>
+              <td class="pattern-circle"></td>
+            </tr>
+            <tr>
+              <td class="pattern-circle"></td>
+              <td class="pattern-circle"></td>
+              <td class="pattern-circle"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <p>INFORMACION TRABAJO REALIZADO</p>
+    <table>
+      <tr>
+        <td>
+          <div class="notas"></div>
+        </td>
+        <td>
+          <div class="notas"></div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
