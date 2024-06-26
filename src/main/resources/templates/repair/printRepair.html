@@ -51,6 +51,7 @@
       }
       .notas {
         border: 2px solid black;
+        height: 100px;
       }
       .align-top {
         vertical-align: top;
@@ -70,6 +71,9 @@
       <tr>
         <td>Reporte de reparacion</td>
         <td>Nº 1234</td>
+      </tr>
+      <tr>
+        <td colspan="3">Persona Asignada:</td>
       </tr>
     </table>
     <p>DATOS DEL CLIENTE</p>
@@ -97,7 +101,8 @@
         <td class="w-25"><span class="data-header"> Modelo: </span> <span></span></td>
       </tr>
       <tr>
-        <td colspan="3"><span class="data-header"> Numero Serie: </span> <span></span></td>
+        <td colspan="2"><span class="data-header"> Numero Serie: </span> <span></span></td>
+        <td colspan="2"><span class="data-header"> Datos Importantes: </span> <span></span></td>
       </tr>
       <tr>
         <td class="w-33"><span class="data-header"> Garantía: </span> <span></span></td>
@@ -133,10 +138,32 @@
     <p>INFORMACION TRABAJO REALIZADO</p>
     <table>
       <tr>
-        <td>
+        <td class="w-50">
+          <p>DESCRIPCION DEL PROBLEMA</p>
           <div class="notas"></div>
         </td>
+        <td class="w-25">
+          <p>OBSERVACIONES</p>
+          <div class="notas"></div>
+        </td>
+        <td class="w-25">
+          <p>MATERIAL ENTREGADO</p>
+          <div class="notas"></div>
+        </td>
+      </tr>
+      <tr>
         <td>
+          <p>TRABAJO REALIZADO</p>
+          <div class="notas"></div>
+        </td>
+        <td colspan="2">
+          <p>MATERIAL USADO</p>
+          <div class="notas"></div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <p>TOTAL</p>
           <div class="notas"></div>
         </td>
       </tr>

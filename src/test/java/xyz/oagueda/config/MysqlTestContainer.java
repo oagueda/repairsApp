@@ -20,6 +20,7 @@ public class MysqlTestContainer implements SqlTestContainer {
         }
     }
 
+    @SuppressWarnings("resource")
     @Override
     public void afterPropertiesSet() {
         if (null == mysqlContainer) {
