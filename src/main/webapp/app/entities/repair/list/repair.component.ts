@@ -20,6 +20,7 @@ import { IRepair } from '../repair.model';
 import { IDevice } from 'app/entities/device/device.model';
 import { FilterOptions, IFilterOption, IFilterOptions } from 'app/shared/filter/filter.model';
 import { FilterComponent } from 'app/shared/filter';
+import FileSaver from 'file-saver';
 
 @Component({
   standalone: true,
@@ -112,6 +113,16 @@ export class RepairComponent implements OnInit {
 
   navigateToWithComponentValues(event: SortState): void {
     this.handleNavigation(event, this.filters.filterOptions);
+  }
+
+  print(repair: IRepair): void {
+    this.repairService.print(repair.id).subscribe({
+      next: res => {
+        if (!res.body) return;
+        const file = new Blob([res.body], { type: 'application/pdf' });
+        FileSaver.saveAs(file, repair.device?.customer?.name?.replace(/ /g, '') + '-' + repair.device?.customer?.nif?.replace(/ /g, ''));
+      },
+    });
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {

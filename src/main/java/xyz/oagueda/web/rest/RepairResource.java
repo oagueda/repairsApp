@@ -204,10 +204,7 @@ public class RepairResource {
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .contentLength(bas.contentLength())
-            .header(
-                HttpHeaders.CONTENT_DISPOSITION,
-                ContentDisposition.attachment().filename(repairDTO.getDevice().getCustomer().customerPrintName()).build().toString()
-            )
+            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().build().toString())
             .body(bas);
     }
 

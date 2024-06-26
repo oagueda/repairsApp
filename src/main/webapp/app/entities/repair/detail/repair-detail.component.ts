@@ -35,7 +35,10 @@ export class RepairDetailComponent {
       next: res => {
         if (!res.body) return;
         const file = new Blob([res.body], { type: 'application/pdf' });
-        FileSaver.saveAs(file);
+        FileSaver.saveAs(
+          file,
+          this.repair()!.device?.customer?.name?.replace(/ /g, '') + '-' + this.repair()!.device?.customer?.nif?.replace(/ /g, ''),
+        );
       },
     });
   }
