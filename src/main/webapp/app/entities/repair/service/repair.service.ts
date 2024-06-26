@@ -58,6 +58,10 @@ export class RepairService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  print(id: number): Observable<HttpResponse<Blob>> {
+    return this.http.get<Blob>(`${this.resourceUrl}/print/${id}`, { observe: 'response', responseType: 'blob' as 'json' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

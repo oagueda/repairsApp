@@ -157,6 +157,10 @@ public class CustomerDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String customerPrintName() {
+        return this.getName().replace(" ", "") + "-" + this.getNif();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

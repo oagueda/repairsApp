@@ -1,5 +1,6 @@
 package xyz.oagueda.service;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,12 @@ public class RepairService {
 
     private final RepairMapper repairMapper;
 
-    public RepairService(RepairRepository repairRepository, RepairMapper repairMapper) {
+    private final RepairPrintService repairPrintService;
+
+    public RepairService(RepairRepository repairRepository, RepairMapper repairMapper, RepairPrintService repairPrintService) {
         this.repairRepository = repairRepository;
         this.repairMapper = repairMapper;
+        this.repairPrintService = repairPrintService;
     }
 
     /**
@@ -95,5 +99,17 @@ public class RepairService {
     public void delete(Long id) {
         log.debug("Request to delete Repair : {}", id);
         repairRepository.findById(id).orElseThrow().setStatus(Status.DELETED);
+    }
+
+    /**
+     * Print one repair by id.
+     *
+     * @param id the id of the entity.
+     * @return the pdf file.
+     */
+    @Transactional(readOnly = true)
+    public ByteArrayOutputStream print(RepairDTO repairDTO) {
+        log.debug("Request to print Repair : {}", repairDTO);
+        return repairPrintService.printRepair(repairDTO);
     }
 }
