@@ -4,10 +4,13 @@
     <title th:text="#{repair.title}">Repair Report Document</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
+      @page {
+        size: A4;
+      }
       body {
-        border: 2px solid black;
         padding: 1%;
         margin: 1%;
+        page-break-inside: avoid;
       }
       table {
         width: 100%;
@@ -52,7 +55,7 @@
       .notas {
         padding: 1%;
         border: 2px solid black;
-        height: 100px;
+        min-height: 70px;
       }
       .align-top {
         vertical-align: top;
@@ -74,16 +77,16 @@
         <td>Nº <span th:text="${repair.id}"></span></td>
       </tr>
       <tr th:if="${repair.user}">
-        <td colspan="3"><span th:text="#{repair.asignee}"></span><span th:text="${repair.user.login}"></span></td>
+        <td colspan="3"><span th:text="#{repair.assigned}"></span><span th:text="${repair.user.login}"></span></td>
       </tr>
     </table>
     <p th:text="#{repair.customerData}"></p>
     <table>
       <tr>
-        <td class="w-33">
+        <td class="w-66" colspan="2">
           <span class="data-header" th:text="#{repair.customerName}"> </span> <span th:text="${repair?.device?.customer?.name}"></span>
         </td>
-        <td colspan="2" class="w-66">
+        <td class="w-33">
           <span class="data-header" th:text="#{repair.customerNif}"></span> <span th:text="${repair?.device?.customer?.nif}"></span>
         </td>
       </tr>
@@ -143,11 +146,11 @@
         </td>
       </tr>
       <tr>
-        <td class="align-top" th:classappend="${repair?.device?.hasPattern} ? w-75 : w-100">
+        <td class="align-top" th:colspan="${repair?.device?.hasPattern ? 2 : 3}">
           <span class="data-header" th:text="#{repair.notes}"></span>
-          <div class="notas"></div>
+          <div class="notas" th:text="${repair?.device?.notes}"></div>
         </td>
-        <td th:if="${repair?.device?.hasPattern}" class="w-25 h-50 text-align-center">
+        <td th:if="${repair?.device?.hasPattern}" class="w-25 h-50 text-align-center" colspan="1">
           <table>
             <tr>
               <td class="pattern-circle"></td>
