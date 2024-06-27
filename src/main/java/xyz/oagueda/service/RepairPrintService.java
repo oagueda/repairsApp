@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import xyz.oagueda.domain.Repair;
 import xyz.oagueda.service.dto.RepairDTO;
 
 /**
@@ -34,11 +35,11 @@ public class RepairPrintService {
         this.userService = userService;
     }
 
-    public ByteArrayOutputStream printRepair(RepairDTO repairDTO) {
-        log.debug("Printing repairDTO {}", repairDTO);
+    public ByteArrayOutputStream printRepair(Repair repair) {
+        log.debug("Printing repair {}", repair);
         Locale locale = Locale.forLanguageTag(userService.getUserWithAuthorities().orElseThrow().getLangKey());
         Context context = new Context(locale);
-        context.setVariable(REPAIR, repairDTO);
+        context.setVariable(REPAIR, repair);
         String content = templateEngine.process(REPAIR_PATH, context);
         ConverterProperties converterProperties = new ConverterProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

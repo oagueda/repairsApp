@@ -108,8 +108,8 @@ public class RepairService {
      * @return the pdf file.
      */
     @Transactional(readOnly = true)
-    public ByteArrayOutputStream print(RepairDTO repairDTO) {
-        log.debug("Request to print Repair : {}", repairDTO);
-        return repairPrintService.printRepair(repairDTO);
+    public ByteArrayOutputStream print(Repair repair) {
+        log.debug("Request to print Repair : {}", repair);
+        return repairPrintService.printRepair(repair);
     }
 }

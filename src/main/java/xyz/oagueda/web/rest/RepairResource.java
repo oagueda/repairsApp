@@ -24,11 +24,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import xyz.oagueda.domain.Repair;
 import xyz.oagueda.repository.RepairRepository;
 import xyz.oagueda.service.RepairQueryService;
 import xyz.oagueda.service.RepairService;
 import xyz.oagueda.service.criteria.RepairCriteria;
 import xyz.oagueda.service.dto.RepairDTO;
+import xyz.oagueda.service.mapper.RepairMapper;
 import xyz.oagueda.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -51,10 +53,18 @@ public class RepairResource {
 
     private final RepairQueryService repairQueryService;
 
-    public RepairResource(RepairService repairService, RepairRepository repairRepository, RepairQueryService repairQueryService) {
+    private final RepairMapper repairMapper;
+
+    public RepairResource(
+        RepairService repairService,
+        RepairRepository repairRepository,
+        RepairQueryService repairQueryService,
+        RepairMapper repairMapper
+    ) {
         this.repairService = repairService;
         this.repairRepository = repairRepository;
         this.repairQueryService = repairQueryService;
+        this.repairMapper = repairMapper;
     }
 
     /**
@@ -198,8 +208,8 @@ public class RepairResource {
     @GetMapping("/print/{id}")
     public ResponseEntity<Resource> printRepair(@PathVariable("id") Long id) {
         log.debug("REST request to print Repair : {}", id);
-        RepairDTO repairDTO = repairService.findOne(id).orElseThrow();
-        ByteArrayOutputStream baos = repairService.print(repairDTO);
+        Repair repair = repairMapper.toEntity(repairService.findOne(id).orElseThrow());
+        ByteArrayOutputStream baos = repairService.print(repair);
         ByteArrayResource bas = new ByteArrayResource(baos.toByteArray());
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)

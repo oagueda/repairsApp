@@ -50,6 +50,7 @@
         text-decoration: underline;
       }
       .notas {
+        padding: 1%;
         border: 2px solid black;
         height: 100px;
       }
@@ -69,52 +70,84 @@
         <td class="w-25">Fecha: 01/01/2024</td>
       </tr>
       <tr>
-        <td>Reporte de reparacion</td>
-        <td>Nº 1234</td>
+        <td th:text="#{repair.report}"></td>
+        <td>Nº <span th:text="${repair.id}"></span></td>
       </tr>
-      <tr>
-        <td colspan="3">Persona Asignada:</td>
-      </tr>
-    </table>
-    <p>DATOS DEL CLIENTE</p>
-    <table>
-      <tr>
-        <td class="w-33"><span class="data-header"> Nombre del Cliente: </span> <span></span></td>
-        <td colspan="2" class="w-66"><span class="data-header"> NIF: </span> <span></span></td>
-      </tr>
-      <tr>
-        <td class="w-33"><span class="data-header"> Direccion: </span> <span></span></td>
-        <td class="w-33"><span class="data-header"> Ciudad: </span> <span></span></td>
-        <td class="w-33"><span class="data-header"> Codigo postal: </span> <span></span></td>
-      </tr>
-      <tr>
-        <td class="w-33"><span class="data-header"> Mail: </span> <span></span></td>
-        <td class="w-33"><span class="data-header"> Telefono 1: </span> <span></span></td>
-        <td class="w-33"><span class="data-header"> Telefono 2: </span> <span></span></td>
+      <tr th:if="${repair.user}">
+        <td colspan="3"><span th:text="#{repair.asignee}"></span><span th:text="${repair.user.login}"></span></td>
       </tr>
     </table>
-    <p>DATOS DEL SISTEMA</p>
+    <p th:text="#{repair.customerData}"></p>
     <table>
       <tr>
-        <td class="w-25"><span class="data-header"> Tipo: </span> <span></span></td>
-        <td class="w-25"><span class="data-header"> Marca: </span> <span></span></td>
-        <td class="w-25"><span class="data-header"> Modelo: </span> <span></span></td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerName}"> </span> <span th:text="${repair?.device?.customer?.name}"></span>
+        </td>
+        <td colspan="2" class="w-66">
+          <span class="data-header" th:text="#{repair.customerNif}"></span> <span th:text="${repair?.device?.customer?.nif}"></span>
+        </td>
       </tr>
       <tr>
-        <td colspan="2"><span class="data-header"> Numero Serie: </span> <span></span></td>
-        <td colspan="2"><span class="data-header"> Datos Importantes: </span> <span></span></td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerAddress}"></span> <span th:text="${repair?.device?.customer?.address}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerCity}"></span> <span th:text="${repair?.device?.customer?.city}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerZip}"></span> <span th:text="${repair?.device?.customer?.zipCode}"></span>
+        </td>
       </tr>
       <tr>
-        <td class="w-33"><span class="data-header"> Garantía: </span> <span></span></td>
-        <td class="w-33"><span class="data-header"> Contraseña: </span> <span></span></td>
-        <td class="w-33"><span class="data-header"> SIM: </span> <span></span></td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerMail}"></span> <span th:text="${repair?.device?.customer?.email}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerP1}"></span> <span th:text="${repair?.device?.customer?.phone1}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerP2}"></span> <span th:text="${repair?.device?.customer?.phone2}"></span>
+        </td>
+      </tr>
+    </table>
+    <p th:text="#{repair.deviceData}"></p>
+    <table>
+      <tr>
+        <td class="w-25">
+          <span class="data-header" th:text="#{repair.deviceType}"></span> <span th:text="${repair?.device?.type}"></span>
+        </td>
+        <td class="w-25">
+          <span class="data-header" th:text="#{repair.deviceBrand}"></span> <span th:text="${repair?.device?.brand}"></span>
+        </td>
+        <td class="w-25">
+          <span class="data-header" th:text="#{repair.deviceModel}"></span> <span th:text="${repair?.device?.model}"></span>
+        </td>
       </tr>
       <tr>
-        <td class="align-top" th:classappend="${hasPattern} ? w-75 : w-100">
-          <span class="data-header"> Notas: </span>
+        <td colspan="2">
+          <span class="data-header" th:text="#{repair.deviceSN}"></span> <span th:text="${repair?.device?.serialNumber}"></span>
+        </td>
+        <td colspan="2">
+          <span class="data-header" th:text="#{repair.deviceBackup}"></span> <span th:text="${repair.importantData}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.deviceWarr}"></span> <span th:text="${repair?.device?.warranty}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.devicePass}"></span> <span th:text="${repair?.device?.password}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.deviceSIM}"></span> <span th:text="${repair?.device?.simPinCode}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="align-top" th:classappend="${repair?.device?.hasPattern} ? w-75 : w-100">
+          <span class="data-header" th:text="#{repair.notes}"></span>
           <div class="notas"></div>
         </td>
-        <td th:if="${hasPattern}" class="w-25 h-50 text-align-center">
+        <td th:if="${repair?.device?.hasPattern}" class="w-25 h-50 text-align-center">
           <table>
             <tr>
               <td class="pattern-circle"></td>
@@ -135,36 +168,36 @@
         </td>
       </tr>
     </table>
-    <p>INFORMACION TRABAJO REALIZADO</p>
+    <p th:text="#{repair.workInfo}"></p>
     <table>
       <tr>
         <td class="w-50">
-          <p>DESCRIPCION DEL PROBLEMA</p>
-          <div class="notas"></div>
+          <p th:text="#{repair.desc}"></p>
+          <div class="notas" th:text="${repair?.description}"></div>
         </td>
         <td class="w-25">
-          <p>OBSERVACIONES</p>
-          <div class="notas"></div>
+          <p th:text="#{repair.obs}"></p>
+          <div class="notas" th:text="${repair?.observations}"></div>
         </td>
         <td class="w-25">
-          <p>MATERIAL ENTREGADO</p>
-          <div class="notas"></div>
+          <p th:text="#{repair.mat}"></p>
+          <div class="notas" th:text="${repair?.customerMaterial}"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <p>TRABAJO REALIZADO</p>
-          <div class="notas"></div>
+          <p th:text="#{repair.work}"></p>
+          <div class="notas" th:text="${repair?.workDone}"></div>
         </td>
         <td colspan="2">
-          <p>MATERIAL USADO</p>
-          <div class="notas"></div>
+          <p th:text="#{repair.used}"></p>
+          <div class="notas" th:text="${repair?.usedMaterial}"></div>
         </td>
       </tr>
       <tr>
         <td colspan="3">
-          <p>TOTAL</p>
-          <div class="notas"></div>
+          <p th:text="#{repair.total}"></p>
+          <div class="notas" th:text="${repair?.total}"></div>
         </td>
       </tr>
     </table>
