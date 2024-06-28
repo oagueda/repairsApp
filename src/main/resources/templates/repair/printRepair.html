@@ -94,12 +94,12 @@
     <table class="header-table">
       <tr>
         <td rowspan="2" class="w-25">IMAGEN</td>
-        <td>TEXTO PRINCIPAL EMPRESA</td>
-        <td class="w-25">Fecha: 01/01/2024</td>
+        <td class="text-align-center">TEXTO PRINCIPAL EMPRESA</td>
+        <td class="w-25 text-align-center" th:text="${date}"></td>
       </tr>
       <tr>
-        <td th:text="#{repair.report}"></td>
-        <td>Nº <span th:text="${repair.id}"></span></td>
+        <td class="text-align-center" th:text="#{repair.report}"></td>
+        <td class="text-align-center">Nº <span th:text="${repair.id}"></span></td>
       </tr>
       <tr th:if="${repair.user}">
         <td colspan="3"><span th:text="#{repair.assigned}"></span><span th:text="${repair.user.login}"></span></td>
@@ -175,22 +175,40 @@
           <span class="data-header" th:text="#{repair.notes}"></span>
           <div class="notes" th:text="${repair?.device?.notes}"></div>
         </td>
-        <td th:if="${repair?.device?.hasPattern}" class="w-25 h-50 text-align-center" colspan="1">
+        <td th:if="${repair?.device?.hasPattern && repair.device.pattern != null}" class="w-25 h-50 text-align-center" colspan="1">
           <table>
             <tr>
-              <td class="pattern-circle"></td>
-              <td class="pattern-circle"></td>
-              <td class="pattern-circle"></td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='1'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='2'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='3'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
             </tr>
             <tr>
-              <td class="pattern-circle"></td>
-              <td class="pattern-circle"></td>
-              <td class="pattern-circle"></td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='4'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='5'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='6'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
             </tr>
             <tr>
-              <td class="pattern-circle"></td>
-              <td class="pattern-circle"></td>
-              <td class="pattern-circle"></td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='7'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='8'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='9'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
             </tr>
           </table>
         </td>
