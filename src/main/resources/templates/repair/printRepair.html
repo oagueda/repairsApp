@@ -3,16 +3,22 @@
   <head>
     <title th:text="#{repair.title}">Repair Report Document</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
     <style>
       @page {
         size: A4;
       }
       body {
-        padding: 1%;
-        margin: 1%;
         page-break-inside: avoid;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-style: normal;
       }
       table {
+        margin-top: 0px;
+        margin-bottom: 0px;
         width: 100%;
       }
       .header-table,
@@ -52,10 +58,29 @@
       .data-header {
         text-decoration: underline;
       }
-      .notas {
+      .notes {
+        font-size: smaller;
         padding: 1%;
         border: 2px solid black;
-        min-height: 70px;
+        min-height: 90px;
+        max-height: 90px;
+        overflow: hidden;
+      }
+      .text {
+        font-size: smaller;
+        padding: 1%;
+        border: 2px solid black;
+        min-height: 145px;
+        max-height: 145px;
+        overflow: hidden;
+      }
+      .total {
+        padding: 1%;
+        border: 2px solid black;
+        max-height: 30px;
+        min-height: 30px;
+        overflow: hidden;
+        text-align: center;
       }
       .align-top {
         vertical-align: top;
@@ -148,7 +173,7 @@
       <tr>
         <td class="align-top" th:colspan="${repair?.device?.hasPattern ? 2 : 3}">
           <span class="data-header" th:text="#{repair.notes}"></span>
-          <div class="notas" th:text="${repair?.device?.notes}"></div>
+          <div class="notes" th:text="${repair?.device?.notes}"></div>
         </td>
         <td th:if="${repair?.device?.hasPattern}" class="w-25 h-50 text-align-center" colspan="1">
           <table>
@@ -176,31 +201,31 @@
       <tr>
         <td class="w-50">
           <p th:text="#{repair.desc}"></p>
-          <div class="notas" th:text="${repair?.description}"></div>
+          <div class="text" th:text="${repair?.description}"></div>
         </td>
         <td class="w-25">
           <p th:text="#{repair.obs}"></p>
-          <div class="notas" th:text="${repair?.observations}"></div>
+          <div class="text" th:text="${repair?.observations}"></div>
         </td>
         <td class="w-25">
           <p th:text="#{repair.mat}"></p>
-          <div class="notas" th:text="${repair?.customerMaterial}"></div>
+          <div class="text" th:text="${repair?.customerMaterial}"></div>
         </td>
       </tr>
       <tr>
         <td>
           <p th:text="#{repair.work}"></p>
-          <div class="notas" th:text="${repair?.workDone}"></div>
+          <div class="text" th:text="${repair?.workDone}"></div>
         </td>
         <td colspan="2">
           <p th:text="#{repair.used}"></p>
-          <div class="notas" th:text="${repair?.usedMaterial}"></div>
+          <div class="text" th:text="${repair?.usedMaterial}"></div>
         </td>
       </tr>
       <tr>
         <td colspan="3">
           <p th:text="#{repair.total}"></p>
-          <div class="notas" th:text="${repair?.total}"></div>
+          <div class="total" th:text="${repair?.total}"></div>
         </td>
       </tr>
     </table>
