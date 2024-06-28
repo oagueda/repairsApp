@@ -93,12 +93,10 @@
   <body>
     <table class="header-table">
       <tr>
-        <td rowspan="2" class="w-25">IMAGEN</td>
-        <td class="text-align-center">TEXTO PRINCIPAL EMPRESA</td>
+        <td class="text-align-center" rowspan="2" th:text="#{repair.report}"></td>
         <td class="w-25 text-align-center" th:text="${date}"></td>
       </tr>
       <tr>
-        <td class="text-align-center" th:text="#{repair.report}"></td>
         <td class="text-align-center">Nº <span th:text="${repair.id}"></span></td>
       </tr>
       <tr th:if="${repair.user}">
