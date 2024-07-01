@@ -5,7 +5,6 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Locale;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +27,13 @@ public class RepairPrintService {
 
     private static final String REPAIR_PATH = "repair/printRepair";
 
-    private static final int MAX_LENGTH = 500;
+    private static final int MAX_LENGTH = 400;
 
-    private static final int SMALL_MAX_LENGTH = 200;
+    private static final int MAX_LENGTH_NOTES = 500;
+
+    private static final int MAX_LENGTH_DESC = 350;
+
+    private static final int SMALL_MAX_LENGTH = 170;
 
     private final SpringTemplateEngine templateEngine;
 
@@ -44,24 +47,24 @@ public class RepairPrintService {
     public ByteArrayOutputStream printRepair(Repair repair) {
         Locale locale = Locale.forLanguageTag(userService.getUserWithAuthorities().orElseThrow().getLangKey());
         Context context = new Context(locale);
-        if (repair.getDescription() != null && repair.getDescription().length() > MAX_LENGTH) repair.setDescription(
-            repair.getDescription().substring(0, MAX_LENGTH)
+        if (repair.getDescription() != null && repair.getDescription().length() > MAX_LENGTH_DESC) repair.setDescription(
+            repair.getDescription().substring(0, MAX_LENGTH_DESC) + "..."
         );
         if (repair.getObservations() != null && repair.getObservations().length() > MAX_LENGTH) repair.setObservations(
-            repair.getObservations().substring(0, SMALL_MAX_LENGTH)
+            repair.getObservations().substring(0, SMALL_MAX_LENGTH) + "..."
         );
         if (repair.getCustomerMaterial() != null && repair.getCustomerMaterial().length() > MAX_LENGTH) repair.setCustomerMaterial(
-            repair.getCustomerMaterial().substring(0, SMALL_MAX_LENGTH)
+            repair.getCustomerMaterial().substring(0, SMALL_MAX_LENGTH) + "..."
         );
         if (repair.getWorkDone() != null && repair.getWorkDone().length() > MAX_LENGTH) repair.setWorkDone(
-            repair.getWorkDone().substring(0, MAX_LENGTH)
+            repair.getWorkDone().substring(0, MAX_LENGTH) + "..."
         );
         if (repair.getUsedMaterial() != null && repair.getUsedMaterial().length() > MAX_LENGTH) repair.setUsedMaterial(
-            repair.getUsedMaterial().substring(0, MAX_LENGTH)
+            repair.getUsedMaterial().substring(0, MAX_LENGTH) + "..."
         );
         if (
-            repair.getDevice() != null && repair.getDevice().getNotes() != null && repair.getDevice().getNotes().length() > MAX_LENGTH
-        ) repair.getDevice().setNotes(repair.getDevice().getNotes().substring(0, MAX_LENGTH));
+            repair.getDevice() != null && repair.getDevice().getNotes() != null && repair.getDevice().getNotes().length() > MAX_LENGTH_NOTES
+        ) repair.getDevice().setNotes(repair.getDevice().getNotes().substring(0, MAX_LENGTH_NOTES) + "...");
         context.setVariable(REPAIR, repair);
         if (
             repair.getDevice() != null && repair.getDevice().getPattern() != null && repair.getDevice().getPattern().getCode() != null
