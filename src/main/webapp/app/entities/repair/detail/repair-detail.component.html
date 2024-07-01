@@ -82,6 +82,10 @@
         <button type="button" [routerLink]="['/repair', repair()!.id, 'edit']" class="btn btn-primary">
           <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
         </button>
+
+        <button type="button" (click)="print()" class="btn btn-primary">
+          <fa-icon icon="print"></fa-icon>&nbsp;<span jhiTranslate="entity.action.print">Print</span>
+        </button>
       </div>
     }
   </div>

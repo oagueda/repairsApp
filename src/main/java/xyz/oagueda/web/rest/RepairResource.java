@@ -2,6 +2,7 @@ package xyz.oagueda.web.rest;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -10,20 +11,26 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import xyz.oagueda.domain.Repair;
 import xyz.oagueda.repository.RepairRepository;
 import xyz.oagueda.service.RepairQueryService;
 import xyz.oagueda.service.RepairService;
 import xyz.oagueda.service.criteria.RepairCriteria;
 import xyz.oagueda.service.dto.RepairDTO;
+import xyz.oagueda.service.mapper.RepairMapper;
 import xyz.oagueda.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -46,10 +53,18 @@ public class RepairResource {
 
     private final RepairQueryService repairQueryService;
 
-    public RepairResource(RepairService repairService, RepairRepository repairRepository, RepairQueryService repairQueryService) {
+    private final RepairMapper repairMapper;
+
+    public RepairResource(
+        RepairService repairService,
+        RepairRepository repairRepository,
+        RepairQueryService repairQueryService,
+        RepairMapper repairMapper
+    ) {
         this.repairService = repairService;
         this.repairRepository = repairRepository;
         this.repairQueryService = repairQueryService;
+        this.repairMapper = repairMapper;
     }
 
     /**
@@ -182,6 +197,25 @@ public class RepairResource {
         log.debug("REST request to get Repair : {}", id);
         Optional<RepairDTO> repairDTO = repairService.findOne(id);
         return ResponseUtil.wrapOrNotFound(repairDTO);
+    }
+
+    /**
+     * {@code GET  /repairs/print/:id} : print the "id" repair.
+     *
+     * @param id the id of the repairDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the repair PDF print, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/print/{id}")
+    public ResponseEntity<Resource> printRepair(@PathVariable("id") Long id) {
+        log.debug("REST request to print Repair : {}", id);
+        Repair repair = repairMapper.toEntity(repairService.findOne(id).orElseThrow());
+        ByteArrayOutputStream baos = repairService.print(repair);
+        ByteArrayResource bas = new ByteArrayResource(baos.toByteArray());
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .contentLength(bas.contentLength())
+            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().build().toString())
+            .body(bas);
     }
 
     /**

@@ -104,7 +104,8 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "print": "Print"
     },
     "detail": {
       "field": "Field",

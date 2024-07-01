@@ -40,6 +40,7 @@ import {
   faScrewdriverWrench,
   faLaptop,
   faUnlock,
+  faPrint,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -85,5 +86,6 @@ export const fontAwesomeIcons = [
   faScrewdriverWrench,
   faLaptop,
   faUnlock,
+  faPrint,
   // jhipster-needle-add-icon-import
 ];

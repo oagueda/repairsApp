@@ -93,7 +93,7 @@
             </th>
             <th scope="col" jhiSortBy="user.login">
               <div class="d-flex">
-                <span jhiTranslate="repairsApp.repair.customer">Customer</span>
+                <span jhiTranslate="repairsApp.board.task.assignedNoDot">Assigned user: </span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -136,6 +136,10 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <button type="button" (click)="print(repair)" class="btn btn-primary btn-sm">
+                    <fa-icon icon="print"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.print">Print</span>
+                  </button>
                   <a [routerLink]="['/repair', repair.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>

@@ -9,6 +9,7 @@
         "deviceType": "Device Type: ",
         "customer": "Customer Name: ",
         "assigned": "Assigned user: ",
+        "assignedNoDot": "Assigned user",
         "notAssigned": "None"
       }
     }

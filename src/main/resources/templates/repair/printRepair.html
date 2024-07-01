@@ -1,0 +1,249 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{repair.title}">Repair Report Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    <style>
+      @page {
+        size: A4;
+      }
+      body {
+        page-break-inside: avoid;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      table {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 100%;
+      }
+      .header-table,
+      .header-table tr,
+      .header-table td {
+        border: 2px solid black;
+        border-collapse: collapse;
+      }
+      p {
+        text-align: center;
+      }
+      .pattern-circle {
+        display: inline-block;
+        width: 25px !important;
+        height: 25px !important;
+        border: 1px solid black;
+        border-radius: 50%;
+      }
+      .w-25 {
+        width: 25%;
+      }
+      .w-33 {
+        width: 33%;
+      }
+      .w-50 {
+        width: 50%;
+      }
+      .w-66 {
+        width: 66%;
+      }
+      .w-75 {
+        width: 75%;
+      }
+      .w-100 {
+        width: 100%;
+      }
+      .data-header {
+        text-decoration: underline;
+      }
+      .notes {
+        font-size: smaller;
+        padding: 1%;
+        border: 2px solid black;
+        min-height: 90px;
+        max-height: 90px;
+        overflow: hidden;
+      }
+      .text {
+        font-size: smaller;
+        padding: 1%;
+        border: 2px solid black;
+        min-height: 145px;
+        max-height: 145px;
+        overflow: hidden;
+      }
+      .total {
+        padding: 1%;
+        border: 2px solid black;
+        max-height: 30px;
+        min-height: 30px;
+        overflow: hidden;
+        text-align: center;
+      }
+      .align-top {
+        vertical-align: top;
+      }
+      .text-align-center {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="header-table">
+      <tr>
+        <td class="text-align-center" rowspan="2" th:text="#{repair.report}"></td>
+        <td class="w-25 text-align-center" th:text="${date}"></td>
+      </tr>
+      <tr>
+        <td class="text-align-center">Nº <span th:text="${repair.id}"></span></td>
+      </tr>
+      <tr th:if="${repair.user}">
+        <td colspan="3"><span th:text="#{repair.assigned}"></span><span th:text="${repair.user.login}"></span></td>
+      </tr>
+    </table>
+    <p th:text="#{repair.customerData}"></p>
+    <table>
+      <tr>
+        <td class="w-66" colspan="2">
+          <span class="data-header" th:text="#{repair.customerName}"> </span> <span th:text="${repair?.device?.customer?.name}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerNif}"></span> <span th:text="${repair?.device?.customer?.nif}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerAddress}"></span> <span th:text="${repair?.device?.customer?.address}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerCity}"></span> <span th:text="${repair?.device?.customer?.city}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerZip}"></span> <span th:text="${repair?.device?.customer?.zipCode}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerMail}"></span> <span th:text="${repair?.device?.customer?.email}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerP1}"></span> <span th:text="${repair?.device?.customer?.phone1}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.customerP2}"></span> <span th:text="${repair?.device?.customer?.phone2}"></span>
+        </td>
+      </tr>
+    </table>
+    <p th:text="#{repair.deviceData}"></p>
+    <table>
+      <tr>
+        <td class="w-25">
+          <span class="data-header" th:text="#{repair.deviceType}"></span> <span th:text="${repair?.device?.type}"></span>
+        </td>
+        <td class="w-25">
+          <span class="data-header" th:text="#{repair.deviceBrand}"></span> <span th:text="${repair?.device?.brand}"></span>
+        </td>
+        <td class="w-25">
+          <span class="data-header" th:text="#{repair.deviceModel}"></span> <span th:text="${repair?.device?.model}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <span class="data-header" th:text="#{repair.deviceSN}"></span> <span th:text="${repair?.device?.serialNumber}"></span>
+        </td>
+        <td colspan="2">
+          <span class="data-header" th:text="#{repair.deviceBackup}"></span> <span th:text="${repair.importantData}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.deviceWarr}"></span> <span th:text="${repair?.device?.warranty}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.devicePass}"></span> <span th:text="${repair?.device?.password}"></span>
+        </td>
+        <td class="w-33">
+          <span class="data-header" th:text="#{repair.deviceSIM}"></span> <span th:text="${repair?.device?.simPinCode}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="align-top" th:colspan="${repair?.device?.hasPattern ? 2 : 3}">
+          <span class="data-header" th:text="#{repair.notes}"></span>
+          <div class="notes" th:text="${repair?.device?.notes}"></div>
+        </td>
+        <td th:if="${repair?.device?.hasPattern && repair.device.pattern != null}" class="w-25 h-50 text-align-center" colspan="1">
+          <table>
+            <tr>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='1'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='2'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='3'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+            </tr>
+            <tr>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='4'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='5'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='6'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+            </tr>
+            <tr>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='7'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='8'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+              <td class="pattern-circle">
+                <th:block th:each="number,i : ${code}"><span th:if="${number=='9'}" th:text="${i.index + 1}"></span></th:block>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <p th:text="#{repair.workInfo}"></p>
+    <table>
+      <tr>
+        <td class="w-50">
+          <p th:text="#{repair.desc}"></p>
+          <div class="text" th:text="${repair?.description}"></div>
+        </td>
+        <td class="w-25">
+          <p th:text="#{repair.obs}"></p>
+          <div class="text" th:text="${repair?.observations}"></div>
+        </td>
+        <td class="w-25">
+          <p th:text="#{repair.mat}"></p>
+          <div class="text" th:text="${repair?.customerMaterial}"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p th:text="#{repair.work}"></p>
+          <div class="text" th:text="${repair?.workDone}"></div>
+        </td>
+        <td colspan="2">
+          <p th:text="#{repair.used}"></p>
+          <div class="text" th:text="${repair?.usedMaterial}"></div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <p th:text="#{repair.total}"></p>
+          <div class="total" th:text="${repair?.total}"></div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
