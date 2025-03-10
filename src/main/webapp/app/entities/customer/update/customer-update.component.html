@@ -1,7 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-customer-heading" data-cy="CustomerCreateUpdateHeading" jhiTranslate="repairsApp.customer.home.createOrEditLabel">
+      <h2
+        id="jhi-customer-heading"
+        data-cy="CustomerCreateUpdateHeading"
+        jhiTranslate="{{ customer?.id ? 'repairsApp.customer.home.editLabel' : 'repairsApp.customer.home.createLabel' }}"
+      >
         Create or edit a Customer
       </h2>
 
@@ -75,30 +79,18 @@
           <label class="form-label" for="field_email" jhiTranslate="repairsApp.customer.email">Email</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
         </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            for="field_deleted"
-            [ngbTooltip]="'repairsApp.customer.help.deleted' | translate"
-            jhiTranslate="repairsApp.customer.deleted"
-            >Deleted</label
-          >
-          <input type="checkbox" class="form-check" name="deleted" id="field_deleted" data-cy="deleted" formControlName="deleted" />
-          @if (editForm.get('deleted')!.invalid && (editForm.get('deleted')!.dirty || editForm.get('deleted')!.touched)) {
-            <div>
-              @if (editForm.get('deleted')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
+        @if (isModal) {
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="emitCloseModal()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+        } @else {
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+        }
 
         <button
           type="submit"

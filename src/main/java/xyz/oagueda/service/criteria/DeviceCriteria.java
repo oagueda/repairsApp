@@ -68,6 +68,8 @@ public class DeviceCriteria implements Serializable, Criteria {
 
     private Boolean distinct;
 
+    private String filter;
+
     public DeviceCriteria() {}
 
     public DeviceCriteria(DeviceCriteria other) {
@@ -85,6 +87,7 @@ public class DeviceCriteria implements Serializable, Criteria {
         this.repairId = other.optionalRepairId().map(LongFilter::copy).orElse(null);
         this.customerId = other.optionalCustomerId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
+        this.filter = other.filter;
     }
 
     @Override
@@ -356,6 +359,14 @@ public class DeviceCriteria implements Serializable, Criteria {
 
     public void setDistinct(Boolean distinct) {
         this.distinct = distinct;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     @Override

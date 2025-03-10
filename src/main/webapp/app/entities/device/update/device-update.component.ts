@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
@@ -18,17 +18,34 @@ import { Type } from 'app/entities/enumerations/type.model';
 import { DeviceService } from '../service/device.service';
 import { IDevice } from '../device.model';
 import { DeviceFormService, DeviceFormGroup } from './device-form.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Options } from 'app/entities/enumerations/options.model';
+import { ModalComponent } from 'app/entities/modal/modal.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-device-update',
   templateUrl: './device-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgSelectModule],
 })
 export class DeviceUpdateComponent implements OnInit {
+  @Input() isModal = false;
+  @Input() set selectCustomer(previousCustomer: ICustomer) {
+    if (previousCustomer.id != -1) {
+      this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+        this.customersSharedCollection,
+        previousCustomer,
+      );
+      this.editForm.get('customer')?.setValue(previousCustomer);
+    }
+  }
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<IDevice>();
   isSaving = false;
   device: IDevice | null = null;
   typeValues = Object.keys(Type);
+
+  customerSearchTerm = new Subject<string>();
 
   patternsCollection: IPattern[] = [];
   customersSharedCollection: ICustomer[] = [];
@@ -40,6 +57,7 @@ export class DeviceUpdateComponent implements OnInit {
   protected patternService = inject(PatternService);
   protected customerService = inject(CustomerService);
   protected activatedRoute = inject(ActivatedRoute);
+  private modalService = inject(NgbModal);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DeviceFormGroup = this.deviceFormService.createDeviceFormGroup();
@@ -56,6 +74,10 @@ export class DeviceUpdateComponent implements OnInit {
       }
 
       this.loadRelationshipsOptions();
+    });
+
+    this.customerSearchTerm.subscribe(term => {
+      this.searchCustomer(term);
     });
   }
 
@@ -88,15 +110,68 @@ export class DeviceUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
+  openPattern(): void {
+    const modalRef = this.modalService.open(ModalComponent, { fullscreen: false });
+    modalRef.componentInstance.options = [Options.PATTERN];
+    modalRef.closed.subscribe((res: IPattern) => {
+      this.editForm.get('pattern')?.setValue(res);
+    });
+  }
+
+  protected searchCustomer(term: string): void {
+    let customersByName: ICustomer[] = [];
+    let customersByNif: ICustomer[] = [];
+    this.customersSharedCollection = [];
+
+    if (term && term.trim().length > 0) {
+      this.customerService.query({ 'name.contains': term }).subscribe({
+        next: response => {
+          customersByName = response.body ?? [];
+        },
+        complete: () => {
+          this.customerService.query({ 'nif.contains': term }).subscribe({
+            next: response => {
+              customersByNif = response.body ?? [];
+            },
+            complete: () => {
+              for (const customer of customersByName) {
+                this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+                  this.customersSharedCollection,
+                  customer,
+                );
+              }
+              for (const customer of customersByNif) {
+                this.customersSharedCollection = this.customerService.addCustomerToCollectionIfMissing<ICustomer>(
+                  this.customersSharedCollection,
+                  customer,
+                );
+              }
+            },
+          });
+        },
+      });
+    } else {
+      this.loadRelationshipsOptions();
+    }
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDevice>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => this.onSaveSuccess(response.body ?? { id: -1 }),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveSuccess(newDevice: IDevice): void {
+    if (this.isModal) {
+      this.completed.emit(newDevice);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {

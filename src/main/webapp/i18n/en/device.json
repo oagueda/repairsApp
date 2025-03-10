@@ -5,14 +5,15 @@
         "title": "Devices",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Device",
-        "createOrEditLabel": "Create or edit a Device",
+        "editLabel": "Edit a Device",
         "notFound": "No Devices found"
       },
       "created": "A new Device is created with identifier {{ param }}",
       "updated": "A Device is updated with identifier {{ param }}",
       "deleted": "A Device is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Device {{ id }}?"
+        "question": "Are you sure you want to delete Device {{ id }}?",
+        "forceDeleteQuestion": "Force Deletion"
       },
       "detail": {
         "title": "Device"
@@ -27,10 +28,11 @@
       "hasPattern": "Has Pattern",
       "simPinCode": "Sim Pin Code",
       "notes": "Notes",
-      "deleted": "Deleted",
+      "isDeleted": "Deleted",
       "pattern": "Pattern",
       "repair": "Repair",
       "customer": "Customer",
+      "newPattern": "New Pattern",
       "help": {
         "type": "The type property is an enumeration",
         "deleted": "Field for logical deletion\nshould be false by default"

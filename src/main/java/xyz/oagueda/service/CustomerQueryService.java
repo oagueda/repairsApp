@@ -1,6 +1,9 @@
 package xyz.oagueda.service;
 
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import java.util.Arrays;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -8,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.QueryService;
 import xyz.oagueda.domain.*; // for static metamodels
-import xyz.oagueda.domain.Customer;
 import xyz.oagueda.repository.CustomerRepository;
 import xyz.oagueda.service.criteria.CustomerCriteria;
 import xyz.oagueda.service.dto.CustomerDTO;
@@ -24,7 +25,7 @@ import xyz.oagueda.service.mapper.CustomerMapper;
  */
 @Service
 @Transactional(readOnly = true)
-public class CustomerQueryService extends QueryService<Customer> {
+public class CustomerQueryService extends SpecQueryService<Customer> {
 
     private final Logger log = LoggerFactory.getLogger(CustomerQueryService.class);
 
@@ -108,6 +109,18 @@ public class CustomerQueryService extends QueryService<Customer> {
                 specification = specification.and(
                     buildSpecification(criteria.getDeviceId(), root -> root.join(Customer_.devices, JoinType.LEFT).get(Device_.id))
                 );
+            }
+
+            if (criteria.getFilter() != null) {
+                List<SingularAttribute<Customer, ?>> defaultColumns = Arrays.asList(
+                    Customer_.id,
+                    Customer_.name,
+                    Customer_.nif,
+                    Customer_.phone1,
+                    Customer_.email
+                );
+
+                specification = specification.and(createLikeFilter(criteria.getFilter(), defaultColumns));
             }
         }
         return specification;

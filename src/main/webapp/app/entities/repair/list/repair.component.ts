@@ -17,6 +17,10 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RepairDeleteDialogComponent } from '../delete/repair-delete-dialog.component';
 import { EntityArrayResponseType, RepairService } from '../service/repair.service';
 import { IRepair } from '../repair.model';
+import { IDevice } from 'app/entities/device/device.model';
+import { FilterOptions, IFilterOption, IFilterOptions } from 'app/shared/filter/filter.model';
+import { FilterComponent } from 'app/shared/filter';
+import FileSaver from 'file-saver';
 
 @Component({
   standalone: true,
@@ -32,14 +36,17 @@ import { IRepair } from '../repair.model';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     InfiniteScrollModule,
+    FilterComponent,
   ],
 })
 export class RepairComponent implements OnInit {
   subscription: Subscription | null = null;
   repairs?: IRepair[];
   isLoading = false;
-
+  filters: IFilterOptions = new FilterOptions();
   sortState = sortStateSignal({});
+
+  filter = '';
 
   itemsPerPage = ITEMS_PER_PAGE;
   links: WritableSignal<{ [key: string]: undefined | { [key: string]: string | undefined } }> = signal({});
@@ -65,6 +72,7 @@ export class RepairComponent implements OnInit {
         tap(() => this.load()),
       )
       .subscribe();
+    this.filters.filterChanges.subscribe(filterOptions => this.handleNavigation(this.sortState(), filterOptions));
   }
 
   reset(): void {
@@ -104,11 +112,22 @@ export class RepairComponent implements OnInit {
   }
 
   navigateToWithComponentValues(event: SortState): void {
-    this.handleNavigation(event);
+    this.handleNavigation(event, this.filters.filterOptions);
+  }
+
+  print(repair: IRepair): void {
+    this.repairService.print(repair.id).subscribe({
+      next: res => {
+        if (!res.body) return;
+        const file = new Blob([res.body], { type: 'application/pdf' });
+        FileSaver.saveAs(file, repair.device?.customer?.name?.replace(/ /g, '') + '-' + repair.device?.customer?.nif?.replace(/ /g, ''));
+      },
+    });
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
+    this.filters.initializeFromParams(params);
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -146,7 +165,12 @@ export class RepairComponent implements OnInit {
     this.isLoading = true;
     const queryObject: any = {
       size: this.itemsPerPage,
+      filter: this.filter,
+      sort: this.sortService.buildSortParam(this.sortState()),
     };
+    this.filters.filterOptions.forEach(filterOption => {
+      queryObject[filterOption.name] = filterOption.values;
+    });
     if (this.hasMorePage()) {
       Object.assign(queryObject, this.links().next);
     } else if (this.isFirstFetch()) {
@@ -156,12 +180,15 @@ export class RepairComponent implements OnInit {
     return this.repairService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
-  protected handleNavigation(sortState: SortState): void {
-    this.links.set({});
-
-    const queryParamsObj = {
+  protected handleNavigation(sortState: SortState, filterOptions?: IFilterOption[]): void {
+    const queryParamsObj: any = {
+      size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(sortState),
     };
+
+    filterOptions?.forEach(filterOption => {
+      queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
+    });
 
     this.ngZone.run(() => {
       this.router.navigate(['./'], {

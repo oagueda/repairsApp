@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,6 +18,9 @@ import { CustomerFormService, CustomerFormGroup } from './customer-form.service'
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class CustomerUpdateComponent implements OnInit {
+  @Input() isModal = false;
+  @Output() closeModal = new EventEmitter<boolean>();
+  @Output() completed = new EventEmitter<ICustomer>();
   isSaving = false;
   customer: ICustomer | null = null;
 
@@ -51,15 +54,23 @@ export class CustomerUpdateComponent implements OnInit {
     }
   }
 
+  emitCloseModal(): void {
+    this.closeModal.emit(true);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICustomer>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: response => this.onSaveSuccess(response.body ?? { id: -1 }),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveSuccess(newCustomer: ICustomer): void {
+    if (this.isModal) {
+      this.completed.emit(newCustomer);
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {

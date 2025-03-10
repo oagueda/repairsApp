@@ -192,12 +192,13 @@ public class CustomerResource {
      * {@code DELETE  /customers/:id} : delete the "id" customer.
      *
      * @param id the id of the customerDTO to delete.
+     * @param force if the deletion should be forced.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id) {
-        log.debug("REST request to delete Customer : {}", id);
-        customerService.delete(id);
+    @DeleteMapping("/{id}/{force}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id, @PathVariable("force") boolean force) {
+        log.debug("REST request to delete Customer : {}, force: {}", id, force);
+        customerService.delete(id, force);
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();

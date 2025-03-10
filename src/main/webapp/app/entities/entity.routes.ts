@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
+import BoardComponent from './board/board.component';
 
 const routes: Routes = [
-  {
-    path: 'authority',
-    data: { pageTitle: 'repairsApp.adminAuthority.home.title' },
-    loadChildren: () => import('./admin/authority/authority.routes'),
-  },
   {
     path: 'customer',
     data: { pageTitle: 'repairsApp.customer.home.title' },
@@ -25,6 +21,11 @@ const routes: Routes = [
     path: 'pattern',
     data: { pageTitle: 'repairsApp.pattern.home.title' },
     loadChildren: () => import('./pattern/pattern.routes'),
+  },
+  {
+    path: 'board',
+    component: BoardComponent,
+    title: 'repairsApp.board.home.title',
   },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];

@@ -41,13 +41,25 @@
             <column name="notes" type="${clobType}">
                 <constraints nullable="true" />
             </column>
-            <column name="deleted" type="boolean" remarks="Field for logical deletion\nshould be false by default">
+            <column name="deleted" type="boolean" remarks="Field for logical deletion\nshould be false by default" defaultValueBoolean="false">
                 <constraints nullable="false" />
             </column>
             <column name="pattern_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_device__pattern_id" />
             </column>
             <column name="customer_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="varchar(60)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_by" type="varchar(60)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_date" type="timestamp">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

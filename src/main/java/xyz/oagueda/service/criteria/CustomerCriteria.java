@@ -46,6 +46,8 @@ public class CustomerCriteria implements Serializable, Criteria {
 
     private Boolean distinct;
 
+    private String filter;
+
     public CustomerCriteria() {}
 
     public CustomerCriteria(CustomerCriteria other) {
@@ -61,6 +63,7 @@ public class CustomerCriteria implements Serializable, Criteria {
         this.deleted = other.optionalDeleted().map(BooleanFilter::copy).orElse(null);
         this.deviceId = other.optionalDeviceId().map(LongFilter::copy).orElse(null);
         this.distinct = other.distinct;
+        this.filter = other.filter;
     }
 
     @Override
@@ -294,6 +297,14 @@ public class CustomerCriteria implements Serializable, Criteria {
 
     public void setDistinct(Boolean distinct) {
         this.distinct = distinct;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     @Override

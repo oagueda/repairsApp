@@ -1,0 +1,17 @@
+{
+  "repairsApp": {
+    "board": {
+      "home": {
+        "title": "Repairs Board"
+      },
+      "task": {
+        "code": "Repair Number: ",
+        "deviceType": "Device Type: ",
+        "customer": "Customer Name: ",
+        "assigned": "Assigned user: ",
+        "assignedNoDot": "Assigned user",
+        "notAssigned": "None"
+      }
+    }
+  }
+}

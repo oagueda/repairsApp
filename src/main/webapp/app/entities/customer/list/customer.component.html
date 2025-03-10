@@ -26,6 +26,20 @@
 
   <jhi-filter [filters]="filters"></jhi-filter>
 
+  <div class="d-flex flex-row content-around">
+    <fa-icon icon="search" class="p-2"></fa-icon>
+    <input
+      type="text"
+      class="form-control mb-2"
+      name="search"
+      id="search"
+      data-cy="search"
+      placeholder="Type to search"
+      [(ngModel)]="filter"
+      (keyup)="load()"
+    />
+  </div>
+
   @if (customers?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span jhiTranslate="repairsApp.customer.home.notFound">No Customers found</span>
@@ -58,27 +72,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="address">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.customer.address">Address</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="city">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.customer.city">City</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="zipCode">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.customer.zipCode">Zip Code</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="phone1">
               <div class="d-flex">
                 <span jhiTranslate="repairsApp.customer.phone1">Phone 1</span>
@@ -86,23 +79,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="phone2">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.customer.phone2">Phone 2</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="email">
               <div class="d-flex">
                 <span jhiTranslate="repairsApp.customer.email">Email</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="deleted">
-              <div class="d-flex">
-                <span jhiTranslate="repairsApp.customer.deleted">Deleted</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -118,14 +97,17 @@
               </td>
               <td>{{ customer.name }}</td>
               <td>{{ customer.nif }}</td>
-              <td>{{ customer.address }}</td>
-              <td>{{ customer.city }}</td>
-              <td>{{ customer.zipCode }}</td>
               <td>{{ customer.phone1 }}</td>
-              <td>{{ customer.phone2 }}</td>
               <td>{{ customer.email }}</td>
-              <td>{{ customer.deleted }}</td>
               <td class="text-end">
+                <button type="button" (click)="seeOther('/repair', customer.id)" class="btn btn-primary">
+                  <fa-icon icon="screwdriver-wrench"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeRepairs">See Repairs</span>
+                </button>
+
+                <button type="button" (click)="seeOther('/device', customer.id)" class="btn btn-primary">
+                  <fa-icon icon="laptop"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeDevices">See Devices</span>
+                </button>
+
                 <div class="btn-group">
                   <a [routerLink]="['/customer', customer.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>

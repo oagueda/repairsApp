@@ -9,10 +9,11 @@
         "main": "Entities",
         "adminAuthority": "Authorities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "customer": "Customer",
-        "device": "Device",
-        "repair": "Repair",
-        "pattern": "Pattern"
+        "customer": "Customers",
+        "device": "Devices",
+        "repair": "Repairs",
+        "pattern": "Pattern",
+        "board": "Board"
       },
       "account": {
         "main": "Account",
@@ -103,7 +104,8 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "print": "Print"
     },
     "detail": {
       "field": "Field",
@@ -146,7 +148,9 @@
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
-    }
+    },
+    "deleteCustomer": "Can not delete Customer with Devices, please delete devices first",
+    "deleteDevice": "Can not delete Device with Repairs, please delete repairs first"
   },
-  "footer": "This is your footer"
+  "footer": "Repairs App AGPL-3.0-or-later Copyright oagueda 2024"
 }

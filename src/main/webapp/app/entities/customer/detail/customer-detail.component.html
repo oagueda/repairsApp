@@ -47,12 +47,6 @@
           <dd>
             <span>{{ customer()!.email }}</span>
           </dd>
-          <dt>
-            <span [ngbTooltip]="'repairsApp.customer.help.deleted' | translate" jhiTranslate="repairsApp.customer.deleted">Deleted</span>
-          </dt>
-          <dd>
-            <span>{{ customer()!.deleted }}</span>
-          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
@@ -61,6 +55,14 @@
 
         <button type="button" [routerLink]="['/customer', customer()!.id, 'edit']" class="btn btn-primary">
           <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+
+        <button type="button" (click)="handleNavigation('/repair')" class="btn btn-primary">
+          <fa-icon icon="screwdriver-wrench"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeRepairs">See Repairs</span>
+        </button>
+
+        <button type="button" (click)="handleNavigation('/device')" class="btn btn-primary">
+          <fa-icon icon="laptop"></fa-icon>&nbsp;<span jhiTranslate="repairsApp.customer.seeDevices">See Devices</span>
         </button>
       </div>
     }

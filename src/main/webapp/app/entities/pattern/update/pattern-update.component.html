@@ -1,7 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-pattern-heading" data-cy="PatternCreateUpdateHeading" jhiTranslate="repairsApp.pattern.home.createOrEditLabel">
+      <h2
+        id="jhi-pattern-heading"
+        data-cy="PatternCreateUpdateHeading"
+        jhiTranslate="{{ pattern?.id ? 'repairsApp.pattern.home.editLabel' : 'repairsApp.pattern.home.createLabel' }}"
+      >
         Create or edit a Pattern
       </h2>
 
@@ -15,6 +19,8 @@
           </div>
         }
 
+        <div id="lockContainer" class="w-50"></div>
+
         <div class="mb-3">
           <label class="form-label" for="field_code" jhiTranslate="repairsApp.pattern.code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
@@ -22,9 +28,15 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
+        @if (isModal) {
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="emitCloseModal()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+        } @else {
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+        }
 
         <button
           type="submit"

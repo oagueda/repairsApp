@@ -6,9 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.oagueda.domain.Device;
+import xyz.oagueda.domain.Repair;
+import xyz.oagueda.domain.enumeration.Status;
 import xyz.oagueda.repository.DeviceRepository;
 import xyz.oagueda.service.dto.DeviceDTO;
 import xyz.oagueda.service.mapper.DeviceMapper;
+import xyz.oagueda.web.rest.errors.DeleteDeviceWithRepairsException;
 
 /**
  * Service Implementation for managing {@link xyz.oagueda.domain.Device}.
@@ -23,9 +26,12 @@ public class DeviceService {
 
     private final DeviceMapper deviceMapper;
 
-    public DeviceService(DeviceRepository deviceRepository, DeviceMapper deviceMapper) {
+    private final RepairService repairService;
+
+    public DeviceService(DeviceRepository deviceRepository, DeviceMapper deviceMapper, RepairService repairService) {
         this.deviceRepository = deviceRepository;
         this.deviceMapper = deviceMapper;
+        this.repairService = repairService;
     }
 
     /**
@@ -90,9 +96,21 @@ public class DeviceService {
      * Delete the device by id.
      *
      * @param id the id of the entity.
+     * @param force if the deletion should be forced.
      */
-    public void delete(Long id) {
-        log.debug("Request to delete Device : {}", id);
-        deviceRepository.deleteById(id);
+    public void delete(Long id, boolean force) {
+        log.debug("Request to delete Device : {}, force: {}", id, force);
+        Device device = deviceRepository.findById(id).orElseThrow();
+        if (force) {
+            for (Repair repair : device.getRepairs()) {
+                repairService.delete(repair.getId());
+            }
+        }
+        for (Repair repair : device.getRepairs()) {
+            if (!repair.getStatus().equals(Status.DELETED)) {
+                throw new DeleteDeviceWithRepairsException();
+            }
+        }
+        device.setDeleted(true);
     }
 }

@@ -56,6 +56,8 @@ public class RepairCriteria implements Serializable, Criteria {
 
     private Boolean distinct;
 
+    private String filter;
+
     public RepairCriteria() {}
 
     public RepairCriteria(RepairCriteria other) {
@@ -224,6 +226,14 @@ public class RepairCriteria implements Serializable, Criteria {
 
     public void setDistinct(Boolean distinct) {
         this.distinct = distinct;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     @Override

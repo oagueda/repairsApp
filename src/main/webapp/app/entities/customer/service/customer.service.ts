@@ -40,8 +40,8 @@ export class CustomerService {
     return this.http.get<ICustomer[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  delete(id: number, force: boolean): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}/${force}`, { observe: 'response' });
   }
 
   getCustomerIdentifier(customer: Pick<ICustomer, 'id'>): number {

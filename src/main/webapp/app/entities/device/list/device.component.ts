@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { DataUtils } from 'app/core/util/data-util.service';
-import { FilterComponent, FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter';
+import { FilterComponent, FilterOptions, IFilterOptions, IFilterOption, FilterOption } from 'app/shared/filter';
 import { EntityArrayResponseType, DeviceService } from '../service/device.service';
 import { DeviceDeleteDialogComponent } from '../delete/device-delete-dialog.component';
 import { IDevice } from '../device.model';
@@ -42,6 +42,8 @@ export class DeviceComponent implements OnInit {
 
   sortState = sortStateSignal({});
   filters: IFilterOptions = new FilterOptions();
+
+  filter = '';
 
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
@@ -134,10 +136,14 @@ export class DeviceComponent implements OnInit {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(this.sortState()),
+      filter: this.filter,
     };
     filters.filterOptions.forEach(filterOption => {
       queryObject[filterOption.name] = filterOption.values;
     });
+
+    queryObject['deleted.equals'] = false; // WorkAround for now to not see deleted
+
     return this.deviceService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -155,6 +161,24 @@ export class DeviceComponent implements OnInit {
     this.ngZone.run(() => {
       this.router.navigate(['./'], {
         relativeTo: this.activatedRoute,
+        queryParams: queryParamsObj,
+      });
+    });
+  }
+
+  protected seeOther(deviceId: number): void {
+    const queryParamsObj: any = {
+      page: 1,
+      size: 20,
+      sort: 'id,asc',
+    };
+    let filterOption: FilterOption;
+
+    filterOption = new FilterOption('deviceId.equals', [deviceId.toString()]);
+    queryParamsObj[filterOption.nameAsQueryParam()] = filterOption.values;
+
+    this.ngZone.run(() => {
+      this.router.navigate(['/repair'], {
         queryParams: queryParamsObj,
       });
     });

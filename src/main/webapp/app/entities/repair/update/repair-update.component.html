@@ -1,7 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-repair-heading" data-cy="RepairCreateUpdateHeading" jhiTranslate="repairsApp.repair.home.createOrEditLabel">
+      <h2
+        id="jhi-repair-heading"
+        data-cy="RepairCreateUpdateHeading"
+        jhiTranslate="{{ repair?.id ? 'repairsApp.repair.home.editLabel' : 'repairsApp.repair.home.createLabel' }}"
+      >
         Create or edit a Repair
       </h2>
 
@@ -14,6 +18,27 @@
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user" jhiTranslate="repairsApp.repair.user">User</label>
+          <ng-select
+            id="field_user"
+            data-cy="user"
+            name="user"
+            formControlName="user"
+            [compareWith]="compareUser"
+            [items]="usersSharedCollection"
+            bindLabel="name"
+            [typeahead]="userSearchTerm"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{ item.login }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+              <span>{{ item.login }}</span>
+            </ng-template>
+          </ng-select>
+        </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_description" jhiTranslate="repairsApp.repair.description">Description</label>
@@ -81,21 +106,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_closedDate" jhiTranslate="repairsApp.repair.closedDate">Closed Date</label>
-          <div class="d-flex">
-            <input
-              id="field_closedDate"
-              data-cy="closedDate"
-              type="datetime-local"
-              class="form-control"
-              name="closedDate"
-              formControlName="closedDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_budget" jhiTranslate="repairsApp.repair.budget">Budget</label>
           <input type="text" class="form-control" name="budget" id="field_budget" data-cy="budget" formControlName="budget" />
         </div>
@@ -146,26 +156,60 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_device" jhiTranslate="repairsApp.repair.device">Device</label>
-          <select
-            class="form-control"
+          <ng-select
             id="field_device"
             data-cy="device"
             name="device"
             formControlName="device"
             [compareWith]="compareDevice"
+            [items]="devicesSharedCollection"
+            bindLabel="name"
+            [typeahead]="deviceSearchTerm"
           >
-            <option [ngValue]="null"></option>
-            @for (deviceOption of devicesSharedCollection; track $index) {
-              <option [ngValue]="deviceOption">{{ deviceOption.id }}</option>
-            }
-          </select>
+            <ng-template ng-label-tmp let-item="item">
+              <span>{{
+                item.type +
+                  ' ' +
+                  item.brand +
+                  ' ' +
+                  item.model +
+                  ' ' +
+                  item.serialNumber +
+                  ' ' +
+                  item.customer?.name +
+                  ' ' +
+                  item.customer?.nif
+              }}</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+              <span>{{
+                item.type +
+                  ' ' +
+                  item.brand +
+                  ' ' +
+                  item.model +
+                  ' ' +
+                  item.serialNumber +
+                  ' ' +
+                  item.customer?.name +
+                  ' ' +
+                  item.customer?.nif
+              }}</span>
+            </ng-template>
+          </ng-select>
         </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
+        @if (isModal) {
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="emitCloseModal()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+        } @else {
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+        }
 
         <button
           type="submit"
